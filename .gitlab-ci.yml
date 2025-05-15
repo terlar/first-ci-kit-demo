@@ -34,6 +34,12 @@ stack-a:cmp-a:stg:deploy:
       job: stack-a:cmp-b:dev:plan
       optional: true
     - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
       job: stack-b:cmp-a:dev:deploy
       optional: true
     - artifacts: false
@@ -44,6 +50,48 @@ stack-a:cmp-a:stg:deploy:
       optional: true
     - artifacts: false
       job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
       optional: true
   script:
     - echo tofu deploy
@@ -66,6 +114,12 @@ stack-a:cmp-a:stg:plan:
       job: stack-a:cmp-b:dev:plan
       optional: true
     - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
       job: stack-b:cmp-a:dev:deploy
       optional: true
     - artifacts: false
@@ -76,6 +130,48 @@ stack-a:cmp-a:stg:plan:
       optional: true
     - artifacts: false
       job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
       optional: true
   script:
     - echo tofu plan
@@ -136,6 +232,12 @@ stack-a:cmp-b:stg:deploy:
       job: stack-a:cmp-b:dev:plan
       optional: true
     - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
       job: stack-b:cmp-a:dev:deploy
       optional: true
     - artifacts: false
@@ -146,6 +248,48 @@ stack-a:cmp-b:stg:deploy:
       optional: true
     - artifacts: false
       job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
       optional: true
   script:
     - echo tofu deploy
@@ -174,6 +318,12 @@ stack-a:cmp-b:stg:plan:
       job: stack-a:cmp-b:dev:plan
       optional: true
     - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
       job: stack-b:cmp-a:dev:deploy
       optional: true
     - artifacts: false
@@ -185,10 +335,232 @@ stack-a:cmp-b:stg:plan:
     - artifacts: false
       job: stack-b:cmp-b:dev:plan
       optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
   script:
     - echo tofu plan
   stage: main
 stack-a:cmp-b:validate:
+  script:
+    - echo tofu validate
+  stage: main
+stack-a:cmp-c:dev:deploy:
+  needs:
+    - artifacts: true
+      job: stack-a:cmp-c:dev:plan
+      optional: false
+  script:
+    - echo tofu deploy
+  stage: main
+stack-a:cmp-c:dev:plan:
+  needs:
+    - artifacts: false
+      job: stack-a:cmp-c:validate
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-a:cmp-c:stg:deploy:
+  needs:
+    - artifacts: true
+      job: stack-a:cmp-c:stg:plan
+      optional: false
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu deploy
+  stage: main
+stack-a:cmp-c:stg:plan:
+  needs:
+    - artifacts: false
+      job: stack-a:cmp-c:validate
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-a:cmp-c:validate:
   script:
     - echo tofu validate
   stage: main
@@ -244,6 +616,12 @@ stack-b:cmp-a:stg:deploy:
       job: stack-a:cmp-b:dev:plan
       optional: true
     - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
       job: stack-b:cmp-a:dev:deploy
       optional: true
     - artifacts: false
@@ -254,6 +632,48 @@ stack-b:cmp-a:stg:deploy:
       optional: true
     - artifacts: false
       job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
       optional: true
   script:
     - echo tofu deploy
@@ -282,6 +702,12 @@ stack-b:cmp-a:stg:plan:
       job: stack-a:cmp-b:dev:plan
       optional: true
     - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
       job: stack-b:cmp-a:dev:deploy
       optional: true
     - artifacts: false
@@ -292,6 +718,48 @@ stack-b:cmp-a:stg:plan:
       optional: true
     - artifacts: false
       job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
       optional: true
   script:
     - echo tofu plan
@@ -317,6 +785,12 @@ stack-b:cmp-b:dev:deploy:
     - artifacts: false
       job: stack-a:cmp-b:dev:plan
       optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
   script:
     - echo tofu deploy
   stage: main
@@ -336,6 +810,12 @@ stack-b:cmp-b:dev:plan:
       optional: true
     - artifacts: false
       job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
       optional: true
   script:
     - echo tofu plan
@@ -358,6 +838,12 @@ stack-b:cmp-b:stg:deploy:
       job: stack-a:cmp-b:stg:plan
       optional: true
     - artifacts: false
+      job: stack-a:cmp-c:stg:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:stg:plan
+      optional: true
+    - artifacts: false
       job: stack-a:cmp-a:dev:deploy
       optional: true
     - artifacts: false
@@ -370,6 +856,12 @@ stack-b:cmp-b:stg:deploy:
       job: stack-a:cmp-b:dev:plan
       optional: true
     - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
       job: stack-b:cmp-a:dev:deploy
       optional: true
     - artifacts: false
@@ -380,6 +872,48 @@ stack-b:cmp-b:stg:deploy:
       optional: true
     - artifacts: false
       job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
       optional: true
   script:
     - echo tofu deploy
@@ -402,6 +936,12 @@ stack-b:cmp-b:stg:plan:
       job: stack-a:cmp-b:stg:plan
       optional: true
     - artifacts: false
+      job: stack-a:cmp-c:stg:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:stg:plan
+      optional: true
+    - artifacts: false
       job: stack-a:cmp-a:dev:deploy
       optional: true
     - artifacts: false
@@ -412,6 +952,12 @@ stack-b:cmp-b:stg:plan:
       optional: true
     - artifacts: false
       job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
       optional: true
     - artifacts: false
       job: stack-b:cmp-a:dev:deploy
@@ -425,10 +971,1384 @@ stack-b:cmp-b:stg:plan:
     - artifacts: false
       job: stack-b:cmp-b:dev:plan
       optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
   script:
     - echo tofu plan
   stage: main
 stack-b:cmp-b:validate:
+  script:
+    - echo tofu validate
+  stage: main
+stack-c:cmp-a:dev:deploy:
+  needs:
+    - artifacts: true
+      job: stack-c:cmp-a:dev:plan
+      optional: false
+  script:
+    - echo tofu deploy
+  stage: main
+stack-c:cmp-a:dev:plan:
+  needs:
+    - artifacts: false
+      job: stack-c:cmp-a:validate
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-c:cmp-a:stg:deploy:
+  needs:
+    - artifacts: true
+      job: stack-c:cmp-a:stg:plan
+      optional: false
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu deploy
+  stage: main
+stack-c:cmp-a:stg:plan:
+  needs:
+    - artifacts: false
+      job: stack-c:cmp-a:validate
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-c:cmp-a:validate:
+  script:
+    - echo tofu validate
+  stage: main
+stack-c:cmp-b:dev:deploy:
+  needs:
+    - artifacts: true
+      job: stack-c:cmp-b:dev:plan
+      optional: false
+  script:
+    - echo tofu deploy
+  stage: main
+stack-c:cmp-b:dev:plan:
+  needs:
+    - artifacts: false
+      job: stack-c:cmp-b:validate
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-c:cmp-b:stg:deploy:
+  needs:
+    - artifacts: true
+      job: stack-c:cmp-b:stg:plan
+      optional: false
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu deploy
+  stage: main
+stack-c:cmp-b:stg:plan:
+  needs:
+    - artifacts: false
+      job: stack-c:cmp-b:validate
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-c:cmp-b:validate:
+  script:
+    - echo tofu validate
+  stage: main
+stack-c:cmp-c:dev:deploy:
+  needs:
+    - artifacts: true
+      job: stack-c:cmp-c:dev:plan
+      optional: false
+  script:
+    - echo tofu deploy
+  stage: main
+stack-c:cmp-c:dev:plan:
+  needs:
+    - artifacts: false
+      job: stack-c:cmp-c:validate
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-c:cmp-c:stg:deploy:
+  needs:
+    - artifacts: true
+      job: stack-c:cmp-c:stg:plan
+      optional: false
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu deploy
+  stage: main
+stack-c:cmp-c:stg:plan:
+  needs:
+    - artifacts: false
+      job: stack-c:cmp-c:validate
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-c:cmp-c:validate:
+  script:
+    - echo tofu validate
+  stage: main
+stack-d:cmp-a:dev:deploy:
+  needs:
+    - artifacts: true
+      job: stack-d:cmp-a:dev:plan
+      optional: false
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+  script:
+    - echo tofu deploy
+  stage: main
+stack-d:cmp-a:dev:plan:
+  needs:
+    - artifacts: false
+      job: stack-d:cmp-a:validate
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-d:cmp-a:stg:deploy:
+  needs:
+    - artifacts: true
+      job: stack-d:cmp-a:stg:plan
+      optional: false
+    - artifacts: false
+      job: stack-c:cmp-a:stg:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:stg:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:stg:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:stg:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:stg:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:stg:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu deploy
+  stage: main
+stack-d:cmp-a:stg:plan:
+  needs:
+    - artifacts: false
+      job: stack-d:cmp-a:validate
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:stg:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:stg:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:stg:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:stg:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:stg:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:stg:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-d:cmp-a:validate:
+  script:
+    - echo tofu validate
+  stage: main
+stack-e:cmp-a:dev:deploy:
+  needs:
+    - artifacts: true
+      job: stack-e:cmp-a:dev:plan
+      optional: false
+  script:
+    - echo tofu deploy
+  stage: main
+stack-e:cmp-a:dev:plan:
+  needs:
+    - artifacts: false
+      job: stack-e:cmp-a:validate
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-e:cmp-a:stg:deploy:
+  needs:
+    - artifacts: true
+      job: stack-e:cmp-a:stg:plan
+      optional: false
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu deploy
+  stage: main
+stack-e:cmp-a:stg:plan:
+  needs:
+    - artifacts: false
+      job: stack-e:cmp-a:validate
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-e:cmp-a:validate:
+  script:
+    - echo tofu validate
+  stage: main
+stack-e:cmp-b:dev:deploy:
+  needs:
+    - artifacts: true
+      job: stack-e:cmp-b:dev:plan
+      optional: false
+  script:
+    - echo tofu deploy
+  stage: main
+stack-e:cmp-b:dev:plan:
+  needs:
+    - artifacts: false
+      job: stack-e:cmp-b:validate
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-e:cmp-b:stg:deploy:
+  needs:
+    - artifacts: true
+      job: stack-e:cmp-b:stg:plan
+      optional: false
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu deploy
+  stage: main
+stack-e:cmp-b:stg:plan:
+  needs:
+    - artifacts: false
+      job: stack-e:cmp-b:validate
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-e:cmp-b:validate:
+  script:
+    - echo tofu validate
+  stage: main
+stack-f:cmp-a:dev:deploy:
+  needs:
+    - artifacts: true
+      job: stack-f:cmp-a:dev:plan
+      optional: false
+  script:
+    - echo tofu deploy
+  stage: main
+stack-f:cmp-a:dev:plan:
+  needs:
+    - artifacts: false
+      job: stack-f:cmp-a:validate
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-f:cmp-a:stg:deploy:
+  needs:
+    - artifacts: true
+      job: stack-f:cmp-a:stg:plan
+      optional: false
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu deploy
+  stage: main
+stack-f:cmp-a:stg:plan:
+  needs:
+    - artifacts: false
+      job: stack-f:cmp-a:validate
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-a:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-b:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-c:cmp-c:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-d:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-a:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-e:cmp-b:dev:plan
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:deploy
+      optional: true
+    - artifacts: false
+      job: stack-f:cmp-a:dev:plan
+      optional: true
+  script:
+    - echo tofu plan
+  stage: main
+stack-f:cmp-a:validate:
   script:
     - echo tofu validate
   stage: main
