@@ -1,9 +1,6 @@
 stack-a:cmp-a:dev:deploy:
   needs:
     - artifacts: false
-      job: stack-a:cmp-a:dev:deploy
-      optional: true
-    - artifacts: false
       job: stack-a:cmp-a:dev:plan
       optional: true
     - artifacts: false
@@ -21,9 +18,6 @@ stack-a:cmp-a:dev:plan:
       job: stack-a:cmp-a:dev:deploy
       optional: true
     - artifacts: false
-      job: stack-a:cmp-a:dev:plan
-      optional: true
-    - artifacts: false
       job: stack-a:cmp-a:stg:deploy
       optional: true
     - artifacts: false
@@ -39,9 +33,6 @@ stack-a:cmp-a:stg:deploy:
       optional: true
     - artifacts: false
       job: stack-a:cmp-a:dev:plan
-      optional: true
-    - artifacts: false
-      job: stack-a:cmp-a:stg:deploy
       optional: true
     - artifacts: false
       job: stack-a:cmp-a:stg:plan
@@ -77,9 +68,6 @@ stack-a:cmp-a:stg:plan:
       optional: true
     - artifacts: false
       job: stack-a:cmp-a:stg:deploy
-      optional: true
-    - artifacts: false
-      job: stack-a:cmp-a:stg:plan
       optional: true
     - artifacts: false
       job: stack-a:cmp-b:dev:deploy

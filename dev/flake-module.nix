@@ -8,6 +8,7 @@
   ];
 
   dev.name = "first-ci-kit-demo";
+  debug = true;
 
   perSystem =
     { config, pkgs, ... }:

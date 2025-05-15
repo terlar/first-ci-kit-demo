@@ -22,6 +22,7 @@
         checks = "dev";
         devShells = "dev";
         legacyPackages = "dev";
+        debug = "dev";
       };
 
       partitions.dev = {

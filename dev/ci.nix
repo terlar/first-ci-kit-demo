@@ -77,18 +77,20 @@
             (lib.mapAttrsToList (deployment: _: {
               jobSets = {
                 ${stack} = {
-                  needs = map (need: {
-                    jobSet =
-                      lib.pipe
-                        [
-                          (need.stack or stack)
-                          (need.component or "")
-                        ]
-                        [
-                          (lib.lists.remove "")
-                          (builtins.concatStringsSep ":")
-                        ];
-                  }) needs;
+                  needs = lib.mkIf (needs != [ ]) (
+                    map (need: {
+                      jobSet =
+                        lib.pipe
+                          [
+                            (need.stack or stack)
+                            (need.component or "")
+                          ]
+                          [
+                            (lib.lists.remove "")
+                            (builtins.concatStringsSep ":")
+                          ];
+                    }) needs
+                  );
                   tags = [ stack ];
                 };
                 ${deployment}.tags = [ deployment ];
