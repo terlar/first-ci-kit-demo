@@ -49,11 +49,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1747300569,
-        "narHash": "sha256-SMFdNmQ4P6QBlLLfkUBlvlpoMVUPrLWnVVz3DTD7SYY=",
+        "lastModified": 1747303171,
+        "narHash": "sha256-gDODJzHove3bzzxd4um0NUVaK7lVdu+LU8XJ6DQS9Y8=",
         "owner": "terlar",
         "repo": "first-ci-kit",
-        "rev": "17f5df467136177f3235c17d1d6f4f6383b69d8c",
+        "rev": "c2e473ed433ce52c78e6855a0ed2808d8d053456",
         "type": "github"
       },
       "original": {

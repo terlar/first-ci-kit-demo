@@ -6,6 +6,7 @@
       pipeline = {
         gitlab-ci = {
           defaultStage = "main";
+          transformJobName = builtins.replaceStrings [ "_" ] [ ":" ];
           settings = {
             default.image = "alpine";
             stages = [ "main" ];
@@ -43,14 +44,14 @@
             ...
           }:
           {
-            "${stack}:${component}:validate" = {
+            "${stack}_${component}_validate" = {
               commands = [ "echo tofu validate" ];
             };
 
-            "${stack}:${component}:${deployment}:plan" = {
+            "${stack}_${component}_${deployment}_plan" = {
               needs = [
                 {
-                  job = "${stack}:${component}:validate";
+                  job = "${stack}_${component}_validate";
                   artifacts = false;
                   optional = true;
                 }
@@ -58,22 +59,22 @@
 
               tags = [
                 deployment
-                "${stack}:${deployment}"
-                "${stack}:${component}:${deployment}"
+                "${stack}_${deployment}"
+                "${stack}_${component}_${deployment}"
               ];
 
               commands = [ "echo tofu plan" ];
             };
 
-            "${stack}:${component}:${deployment}:deploy" = {
+            "${stack}_${component}_${deployment}_deploy" = {
               needs = [
-                { job = "${stack}:${component}:${deployment}:plan"; }
+                { job = "${stack}_${component}_${deployment}_plan"; }
               ];
 
               tags = [
                 deployment
-                "${stack}:${deployment}"
-                "${stack}:${component}:${deployment}"
+                "${stack}_${deployment}"
+                "${stack}_${component}_${deployment}"
               ];
 
               commands = [ "echo tofu deploy" ];
@@ -97,9 +98,9 @@
             (lib.mapAttrsToList (deployment: _: {
               jobSets = {
                 ${deployment}.tags = [ deployment ];
-                "${stack}:${deployment}".tags = [ "${stack}:${deployment}" ];
-                "${stack}:${component}:${deployment}" = {
-                  tags = [ "${stack}:${component}:${deployment}" ];
+                "${stack}_${deployment}".tags = [ "${stack}_${deployment}" ];
+                "${stack}_${component}_${deployment}" = {
+                  tags = [ "${stack}_${component}_${deployment}" ];
                   needs = lib.mkIf (needs != [ ]) (
                     map (need: {
                       jobSet =
@@ -111,7 +112,7 @@
                           ]
                           [
                             (lib.lists.remove "")
-                            (builtins.concatStringsSep ":")
+                            (builtins.concatStringsSep "_")
                           ];
                     }) needs
                   );
