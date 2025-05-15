@@ -1,81 +1,101 @@
 jobs:
   stack-a:cmp-a:dev:deploy:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-a:cmp-a:dev:plan:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-a:cmp-a:stg:deploy:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-a:cmp-a:stg:plan:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-a:cmp-a:validate:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu validate
   stack-a:cmp-b:dev:deploy:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-a:cmp-b:dev:plan:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-a:cmp-b:stg:deploy:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-a:cmp-b:stg:plan:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-a:cmp-b:validate:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu validate
   stack-b:cmp-a:dev:deploy:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-b:cmp-a:dev:plan:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-b:cmp-a:stg:deploy:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-b:cmp-a:stg:plan:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-b:cmp-a:validate:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu validate
   stack-b:cmp-b:dev:deploy:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-b:cmp-b:dev:plan:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-b:cmp-b:stg:deploy:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-b:cmp-b:stg:plan:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-b:cmp-b:validate:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu validate

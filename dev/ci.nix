@@ -16,13 +16,16 @@
           };
         };
 
-        github-actions.settings = {
-          name = "CI";
-          on.push = {
-            branches = [ "main" ];
-          };
-          on.pull_request = {
-            branches = [ "main" ];
+        github-actions = {
+          defaultRunsOn = "ubuntu-latest";
+          settings = {
+            name = "CI";
+            on.push = {
+              branches = [ "main" ];
+            };
+            on.pull_request = {
+              branches = [ "main" ];
+            };
           };
         };
       };
