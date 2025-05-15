@@ -50,11 +50,11 @@
         "process-compose": "process-compose"
       },
       "locked": {
-        "lastModified": 1747311015,
-        "narHash": "sha256-G5pbxyWdXeYqVusHdPAA2h0xuefCP4wV+L1uWCxs5Lc=",
+        "lastModified": 1747313409,
+        "narHash": "sha256-h15QEfD3vpNF3Kzky+LFHuLNs08J883W5LCrANfj/6g=",
         "owner": "terlar",
         "repo": "first-ci-kit",
-        "rev": "66cf09f8f832b91b2d8755b6fdb4cf69e0e3585a",
+        "rev": "6c590e7d06575ce1c95eae4470b42907c8d9549f",
         "type": "github"
       },
       "original": {
