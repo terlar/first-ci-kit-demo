@@ -41,10 +41,6 @@
           {
             "${stack}:${component}:validate" = {
               commands = [ "echo tofu validate" ];
-              tags = [
-                stack
-                "${stack}:${component}"
-              ];
             };
             "${stack}:${component}:${deployment}:plan" = {
               commands = [ "echo tofu plan" ];

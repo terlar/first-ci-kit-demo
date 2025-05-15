@@ -7,7 +7,7 @@
     ./ci.nix
   ];
 
-  dev.name = "my-project";
+  dev.name = "first-ci-kit-demo";
 
   perSystem =
     { config, pkgs, ... }:
@@ -24,12 +24,12 @@
       pre-commit.settings.hooks = {
         first-ci-kit-gen-github-actions = {
           enable = true;
-          files = "^dev/ci.nix$";
+          files = "^dev/(ci|stacks).nix$";
         };
 
         first-ci-kit-gen-gitlab-ci = {
           enable = true;
-          files = "^dev/ci.nix$";
+          files = "^dev/(ci|stacks).nix$";
         };
       };
     };

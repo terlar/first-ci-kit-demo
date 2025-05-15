@@ -1,5 +1,5 @@
 {
-  description = "My Project";
+  description = "first-ci-kit demo";
 
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
