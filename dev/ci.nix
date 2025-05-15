@@ -7,6 +7,7 @@
         gitlab-ci = {
           defaultStage = "main";
           settings = {
+            default.image = "alpine";
             stages = [ "main" ];
             workflow.rules = [
               { "if" = "$CI_MERGE_REQUEST_TARGET_BRANCH_PROTECTED"; }

@@ -1,3 +1,5 @@
+default:
+  image: alpine
 stack-a:cmp-a:dev:deploy:
   needs:
     - artifacts: true
