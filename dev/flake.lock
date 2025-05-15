@@ -228,7 +228,11 @@
     "root": {
       "inputs": {
         "dev-flake": "dev-flake",
-        "first-ci-kit": "first-ci-kit"
+        "first-ci-kit": "first-ci-kit",
+        "process-compose": [
+          "first-ci-kit",
+          "process-compose"
+        ]
       }
     },
     "treefmt": {
