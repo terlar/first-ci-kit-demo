@@ -46,14 +46,15 @@
     "first-ci-kit": {
       "inputs": {
         "flake-parts": "flake-parts_2",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "process-compose": "process-compose"
       },
       "locked": {
-        "lastModified": 1747306437,
-        "narHash": "sha256-tAyFMHXZdEWvoVo55TlXZ0kYYFUoTSTcqxD7e4yKIbU=",
+        "lastModified": 1747311015,
+        "narHash": "sha256-G5pbxyWdXeYqVusHdPAA2h0xuefCP4wV+L1uWCxs5Lc=",
         "owner": "terlar",
         "repo": "first-ci-kit",
-        "rev": "defde9b25fc727f2028fbe65850fbc9e4e632c81",
+        "rev": "66cf09f8f832b91b2d8755b6fdb4cf69e0e3585a",
         "type": "github"
       },
       "original": {
@@ -206,6 +207,21 @@
         "owner": "nixos",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "process-compose": {
+      "locked": {
+        "lastModified": 1740324671,
+        "narHash": "sha256-djc+wRG9L70jlW95Ck4GKr7nTPp1drfsXshJkYZAd9s=",
+        "owner": "platonic-systems",
+        "repo": "process-compose-flake",
+        "rev": "2a17e49b8a5d32278ed77e4a881f992472be18a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "platonic-systems",
+        "repo": "process-compose-flake",
         "type": "github"
       }
     },
