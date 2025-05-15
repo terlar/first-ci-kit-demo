@@ -3,6 +3,7 @@ stages:
 test:
   script:
     - echo "It's working, it's working!"
+  stage: main
 workflow:
   rules:
     - if: $CI_MERGE_REQUEST_TARGET_BRANCH_PROTECTED

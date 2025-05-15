@@ -1,12 +1,15 @@
 {
   first-ci-kit.pipelines.default = {
     pipeline = {
-      gitlab-ci.settings = {
-        stages = [ "main" ];
-        workflow.rules = [
-          { "if" = "$CI_MERGE_REQUEST_TARGET_BRANCH_PROTECTED"; }
-          { "if" = "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"; }
-        ];
+      gitlab-ci = {
+        defaultStage = "main";
+        settings = {
+          stages = [ "main" ];
+          workflow.rules = [
+            { "if" = "$CI_MERGE_REQUEST_TARGET_BRANCH_PROTECTED"; }
+            { "if" = "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"; }
+          ];
+        };
       };
 
       github-actions.settings = {
