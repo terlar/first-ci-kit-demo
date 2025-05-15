@@ -1,5 +1,3 @@
-default:
-  stage: main
 stages:
   - main
 test:

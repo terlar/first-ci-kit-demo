@@ -2,7 +2,6 @@
   first-ci-kit.pipelines.default = {
     pipeline = {
       gitlab-ci.settings = {
-        default.stage = "main";
         stages = [ "main" ];
         workflow.rules = [
           { "if" = "$CI_MERGE_REQUEST_TARGET_BRANCH_PROTECTED"; }
