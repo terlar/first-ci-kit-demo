@@ -1,20 +1,44 @@
 jobs:
   stack-a_cmp-a_dev_deploy:
+    needs:
+      - stack-a_cmp-a_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-a_cmp-a_dev_plan:
+    needs:
+      - stack-a_cmp-a_validate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-a_cmp-a_stg_deploy:
+    needs:
+      - stack-a_cmp-a_stg_plan
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
+      - stack-b_cmp-a_dev_deploy
+      - stack-b_cmp-a_dev_plan
+      - stack-b_cmp-b_dev_deploy
+      - stack-b_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-a_cmp-a_stg_plan:
+    needs:
+      - stack-a_cmp-a_validate
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
+      - stack-b_cmp-a_dev_deploy
+      - stack-b_cmp-a_dev_plan
+      - stack-b_cmp-b_dev_deploy
+      - stack-b_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,21 +49,53 @@ jobs:
       - uses: actions/checkout@v4
       - run: echo tofu validate
   stack-a_cmp-b_dev_deploy:
+    needs:
+      - stack-a_cmp-b_dev_plan
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-a_cmp-b_dev_plan:
+    needs:
+      - stack-a_cmp-b_validate
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-a_cmp-b_stg_deploy:
+    needs:
+      - stack-a_cmp-b_stg_plan
+      - stack-a_cmp-a_stg_deploy
+      - stack-a_cmp-a_stg_plan
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
+      - stack-b_cmp-a_dev_deploy
+      - stack-b_cmp-a_dev_plan
+      - stack-b_cmp-b_dev_deploy
+      - stack-b_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-a_cmp-b_stg_plan:
+    needs:
+      - stack-a_cmp-b_validate
+      - stack-a_cmp-a_stg_deploy
+      - stack-a_cmp-a_stg_plan
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
+      - stack-b_cmp-a_dev_deploy
+      - stack-b_cmp-a_dev_plan
+      - stack-b_cmp-b_dev_deploy
+      - stack-b_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,21 +106,53 @@ jobs:
       - uses: actions/checkout@v4
       - run: echo tofu validate
   stack-b_cmp-a_dev_deploy:
+    needs:
+      - stack-b_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-b_cmp-a_dev_plan:
+    needs:
+      - stack-b_cmp-a_validate
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-b_cmp-a_stg_deploy:
+    needs:
+      - stack-b_cmp-a_stg_plan
+      - stack-a_cmp-b_stg_deploy
+      - stack-a_cmp-b_stg_plan
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
+      - stack-b_cmp-a_dev_deploy
+      - stack-b_cmp-a_dev_plan
+      - stack-b_cmp-b_dev_deploy
+      - stack-b_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-b_cmp-a_stg_plan:
+    needs:
+      - stack-b_cmp-a_validate
+      - stack-a_cmp-b_stg_deploy
+      - stack-a_cmp-b_stg_plan
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
+      - stack-b_cmp-a_dev_deploy
+      - stack-b_cmp-a_dev_plan
+      - stack-b_cmp-b_dev_deploy
+      - stack-b_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -75,21 +163,61 @@ jobs:
       - uses: actions/checkout@v4
       - run: echo tofu validate
   stack-b_cmp-b_dev_deploy:
+    needs:
+      - stack-b_cmp-b_dev_plan
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-b_cmp-b_dev_plan:
+    needs:
+      - stack-b_cmp-b_validate
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu plan
   stack-b_cmp-b_stg_deploy:
+    needs:
+      - stack-b_cmp-b_stg_plan
+      - stack-a_cmp-a_stg_deploy
+      - stack-a_cmp-a_stg_plan
+      - stack-a_cmp-b_stg_deploy
+      - stack-a_cmp-b_stg_plan
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
+      - stack-b_cmp-a_dev_deploy
+      - stack-b_cmp-a_dev_plan
+      - stack-b_cmp-b_dev_deploy
+      - stack-b_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: echo tofu deploy
   stack-b_cmp-b_stg_plan:
+    needs:
+      - stack-b_cmp-b_validate
+      - stack-a_cmp-a_stg_deploy
+      - stack-a_cmp-a_stg_plan
+      - stack-a_cmp-b_stg_deploy
+      - stack-a_cmp-b_stg_plan
+      - stack-a_cmp-a_dev_deploy
+      - stack-a_cmp-a_dev_plan
+      - stack-a_cmp-b_dev_deploy
+      - stack-a_cmp-b_dev_plan
+      - stack-b_cmp-a_dev_deploy
+      - stack-b_cmp-a_dev_plan
+      - stack-b_cmp-b_dev_deploy
+      - stack-b_cmp-b_dev_plan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
