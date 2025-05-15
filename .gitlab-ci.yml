@@ -1,0 +1,11 @@
+default:
+  stage: main
+stages:
+  - main
+test:
+  script:
+    - echo "It's working, it's working!"
+workflow:
+  rules:
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_PROTECTED
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

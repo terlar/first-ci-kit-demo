@@ -1,0 +1,14 @@
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "It's working, it's working!"
+name: CI
+"on":
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
