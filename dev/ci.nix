@@ -42,21 +42,37 @@
             "${stack}:${component}:validate" = {
               commands = [ "echo tofu validate" ];
             };
+
             "${stack}:${component}:${deployment}:plan" = {
+              needs = [
+                {
+                  job = "${stack}:${component}:validate";
+                  artifacts = false;
+                  optional = true;
+                }
+              ];
+
+              tags = [
+                deployment
+                "${stack}:${deployment}"
+                "${stack}:${component}:${deployment}"
+              ];
+
               commands = [ "echo tofu plan" ];
-              tags = [
-                stack
-                "${stack}:${component}"
-                deployment
-              ];
             };
+
             "${stack}:${component}:${deployment}:deploy" = {
-              commands = [ "echo tofu deploy" ];
-              tags = [
-                stack
-                "${stack}:${component}"
-                deployment
+              needs = [
+                { job = "${stack}:${component}:${deployment}:plan"; }
               ];
+
+              tags = [
+                deployment
+                "${stack}:${deployment}"
+                "${stack}:${component}:${deployment}"
+              ];
+
+              commands = [ "echo tofu deploy" ];
             };
           };
       };
@@ -76,7 +92,10 @@
             }:
             (lib.mapAttrsToList (deployment: _: {
               jobSets = {
-                ${stack} = {
+                ${deployment}.tags = [ deployment ];
+                "${stack}:${deployment}".tags = [ "${stack}:${deployment}" ];
+                "${stack}:${component}:${deployment}" = {
+                  tags = [ "${stack}:${component}:${deployment}" ];
                   needs = lib.mkIf (needs != [ ]) (
                     map (need: {
                       jobSet =
@@ -84,6 +103,7 @@
                           [
                             (need.stack or stack)
                             (need.component or "")
+                            deployment
                           ]
                           [
                             (lib.lists.remove "")
@@ -91,10 +111,7 @@
                           ];
                     }) needs
                   );
-                  tags = [ stack ];
                 };
-                ${deployment}.tags = [ deployment ];
-                "${stack}:${component}".tags = [ "${stack}:${component}" ];
               };
 
               jobs = config.jobInterfaces.terraformEnvJobs {
