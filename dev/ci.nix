@@ -103,6 +103,7 @@
                 "${stack}_${deployment}".tags = [ "${stack}_${deployment}" ];
                 "${stack}_${component}_${deployment}" = {
                   tags = [ "${stack}_${component}_${deployment}" ];
+                  github-actions.reusableWorkflow = true;
                   needs = lib.mkIf (needs != [ ]) (
                     map (need: {
                       jobSet =

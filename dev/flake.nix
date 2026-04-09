@@ -4,7 +4,7 @@
   inputs = {
     dev-flake.url = "github:terlar/dev-flake";
     first-ci-kit = {
-      url = "github:terlar/first-ci-kit";
+      url = "git+file:///home/terje/src/github.com/terlar/first-ci-kit?ref=github-improvements";
       inputs.flake-parts.follows = "dev-flake/flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
     };

@@ -1,1039 +1,199 @@
 jobs:
-  stack-a_cmp-a_dev_deploy:
-    needs:
-      - stack-a_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-a_cmp-a_dev_plan:
+  stack-a_cmp-a_dev:
     needs:
       - stack-a_cmp-a_validate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-a_cmp-a_stg_deploy:
-    needs:
-      - stack-a_cmp-a_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-a_cmp-a_stg_plan:
+    secrets: inherit
+    uses: ./.github/workflows/stack-a_cmp-a_dev.yml
+  stack-a_cmp-a_stg:
     needs:
       - stack-a_cmp-a_validate
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-a_cmp-a_stg.yml
   stack-a_cmp-a_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-a_cmp-b_dev_deploy:
+  stack-a_cmp-b_dev:
     needs:
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-a_cmp-b_dev_plan:
-    needs:
+      - stack-a_cmp-a_dev
       - stack-a_cmp-b_validate
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-a_cmp-b_stg_deploy:
+    secrets: inherit
+    uses: ./.github/workflows/stack-a_cmp-b_dev.yml
+  stack-a_cmp-b_stg:
     needs:
-      - stack-a_cmp-b_stg_plan
-      - stack-a_cmp-a_stg_deploy
-      - stack-a_cmp-a_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-a_cmp-b_stg_plan:
-    needs:
+      - stack-a_cmp-a_stg
       - stack-a_cmp-b_validate
-      - stack-a_cmp-a_stg_deploy
-      - stack-a_cmp-a_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-a_cmp-b_stg.yml
   stack-a_cmp-b_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-a_cmp-c_dev_deploy:
-    needs:
-      - stack-a_cmp-c_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-a_cmp-c_dev_plan:
+  stack-a_cmp-c_dev:
     needs:
       - stack-a_cmp-c_validate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-a_cmp-c_stg_deploy:
-    needs:
-      - stack-a_cmp-c_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-a_cmp-c_stg_plan:
+    secrets: inherit
+    uses: ./.github/workflows/stack-a_cmp-c_dev.yml
+  stack-a_cmp-c_stg:
     needs:
       - stack-a_cmp-c_validate
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-a_cmp-c_stg.yml
   stack-a_cmp-c_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-b_cmp-a_dev_deploy:
+  stack-b_cmp-a_dev:
     needs:
-      - stack-b_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-b_cmp-a_dev_plan:
-    needs:
+      - stack-a_cmp-b_dev
       - stack-b_cmp-a_validate
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-b_cmp-a_stg_deploy:
+    secrets: inherit
+    uses: ./.github/workflows/stack-b_cmp-a_dev.yml
+  stack-b_cmp-a_stg:
     needs:
-      - stack-b_cmp-a_stg_plan
-      - stack-a_cmp-b_stg_deploy
-      - stack-a_cmp-b_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-b_cmp-a_stg_plan:
-    needs:
+      - stack-a_cmp-b_stg
       - stack-b_cmp-a_validate
-      - stack-a_cmp-b_stg_deploy
-      - stack-a_cmp-b_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-b_cmp-a_stg.yml
   stack-b_cmp-a_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-b_cmp-b_dev_deploy:
+  stack-b_cmp-b_dev:
     needs:
-      - stack-b_cmp-b_dev_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-b_cmp-b_dev_plan:
-    needs:
+      - stack-a_cmp-a_dev
+      - stack-a_cmp-b_dev
+      - stack-a_cmp-c_dev
       - stack-b_cmp-b_validate
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-b_cmp-b_stg_deploy:
+    secrets: inherit
+    uses: ./.github/workflows/stack-b_cmp-b_dev.yml
+  stack-b_cmp-b_stg:
     needs:
-      - stack-b_cmp-b_stg_plan
-      - stack-a_cmp-a_stg_deploy
-      - stack-a_cmp-a_stg_plan
-      - stack-a_cmp-b_stg_deploy
-      - stack-a_cmp-b_stg_plan
-      - stack-a_cmp-c_stg_deploy
-      - stack-a_cmp-c_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-b_cmp-b_stg_plan:
-    needs:
+      - stack-a_cmp-a_stg
+      - stack-a_cmp-b_stg
+      - stack-a_cmp-c_stg
       - stack-b_cmp-b_validate
-      - stack-a_cmp-a_stg_deploy
-      - stack-a_cmp-a_stg_plan
-      - stack-a_cmp-b_stg_deploy
-      - stack-a_cmp-b_stg_plan
-      - stack-a_cmp-c_stg_deploy
-      - stack-a_cmp-c_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-b_cmp-b_stg.yml
   stack-b_cmp-b_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-c_cmp-a_dev_deploy:
-    needs:
-      - stack-c_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-c_cmp-a_dev_plan:
+  stack-c_cmp-a_dev:
     needs:
       - stack-c_cmp-a_validate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-c_cmp-a_stg_deploy:
-    needs:
-      - stack-c_cmp-a_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-c_cmp-a_stg_plan:
+    secrets: inherit
+    uses: ./.github/workflows/stack-c_cmp-a_dev.yml
+  stack-c_cmp-a_stg:
     needs:
       - stack-c_cmp-a_validate
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-c_cmp-a_stg.yml
   stack-c_cmp-a_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-c_cmp-b_dev_deploy:
-    needs:
-      - stack-c_cmp-b_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-c_cmp-b_dev_plan:
+  stack-c_cmp-b_dev:
     needs:
       - stack-c_cmp-b_validate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-c_cmp-b_stg_deploy:
-    needs:
-      - stack-c_cmp-b_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-c_cmp-b_stg_plan:
+    secrets: inherit
+    uses: ./.github/workflows/stack-c_cmp-b_dev.yml
+  stack-c_cmp-b_stg:
     needs:
       - stack-c_cmp-b_validate
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-c_cmp-b_stg.yml
   stack-c_cmp-b_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-c_cmp-c_dev_deploy:
-    needs:
-      - stack-c_cmp-c_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-c_cmp-c_dev_plan:
+  stack-c_cmp-c_dev:
     needs:
       - stack-c_cmp-c_validate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-c_cmp-c_stg_deploy:
-    needs:
-      - stack-c_cmp-c_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-c_cmp-c_stg_plan:
+    secrets: inherit
+    uses: ./.github/workflows/stack-c_cmp-c_dev.yml
+  stack-c_cmp-c_stg:
     needs:
       - stack-c_cmp-c_validate
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-c_cmp-c_stg.yml
   stack-c_cmp-c_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-d_cmp-a_dev_deploy:
+  stack-d_cmp-a_dev:
     needs:
-      - stack-d_cmp-a_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-d_cmp-a_dev_plan:
-    needs:
+      - stack-c_cmp-a_dev
+      - stack-c_cmp-b_dev
+      - stack-c_cmp-c_dev
       - stack-d_cmp-a_validate
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-d_cmp-a_stg_deploy:
+    secrets: inherit
+    uses: ./.github/workflows/stack-d_cmp-a_dev.yml
+  stack-d_cmp-a_stg:
     needs:
-      - stack-d_cmp-a_stg_plan
-      - stack-c_cmp-a_stg_deploy
-      - stack-c_cmp-a_stg_plan
-      - stack-c_cmp-b_stg_deploy
-      - stack-c_cmp-b_stg_plan
-      - stack-c_cmp-c_stg_deploy
-      - stack-c_cmp-c_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-d_cmp-a_stg_plan:
-    needs:
+      - stack-c_cmp-a_stg
+      - stack-c_cmp-b_stg
+      - stack-c_cmp-c_stg
       - stack-d_cmp-a_validate
-      - stack-c_cmp-a_stg_deploy
-      - stack-c_cmp-a_stg_plan
-      - stack-c_cmp-b_stg_deploy
-      - stack-c_cmp-b_stg_plan
-      - stack-c_cmp-c_stg_deploy
-      - stack-c_cmp-c_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-d_cmp-a_stg.yml
   stack-d_cmp-a_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-e_cmp-a_dev_deploy:
-    needs:
-      - stack-e_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-e_cmp-a_dev_plan:
+  stack-e_cmp-a_dev:
     needs:
       - stack-e_cmp-a_validate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-e_cmp-a_stg_deploy:
-    needs:
-      - stack-e_cmp-a_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-e_cmp-a_stg_plan:
+    secrets: inherit
+    uses: ./.github/workflows/stack-e_cmp-a_dev.yml
+  stack-e_cmp-a_stg:
     needs:
       - stack-e_cmp-a_validate
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-e_cmp-a_stg.yml
   stack-e_cmp-a_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-e_cmp-b_dev_deploy:
-    needs:
-      - stack-e_cmp-b_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-e_cmp-b_dev_plan:
+  stack-e_cmp-b_dev:
     needs:
       - stack-e_cmp-b_validate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-e_cmp-b_stg_deploy:
-    needs:
-      - stack-e_cmp-b_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-e_cmp-b_stg_plan:
+    secrets: inherit
+    uses: ./.github/workflows/stack-e_cmp-b_dev.yml
+  stack-e_cmp-b_stg:
     needs:
       - stack-e_cmp-b_validate
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-e_cmp-b_stg.yml
   stack-e_cmp-b_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
-  stack-f_cmp-a_dev_deploy:
-    needs:
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-f_cmp-a_dev_plan:
+  stack-f_cmp-a_dev:
     needs:
       - stack-f_cmp-a_validate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
-  stack-f_cmp-a_stg_deploy:
-    needs:
-      - stack-f_cmp-a_stg_plan
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu deploy
-  stack-f_cmp-a_stg_plan:
+    secrets: inherit
+    uses: ./.github/workflows/stack-f_cmp-a_dev.yml
+  stack-f_cmp-a_stg:
     needs:
       - stack-f_cmp-a_validate
-      - stack-a_cmp-a_dev_deploy
-      - stack-a_cmp-a_dev_plan
-      - stack-a_cmp-b_dev_deploy
-      - stack-a_cmp-b_dev_plan
-      - stack-a_cmp-c_dev_deploy
-      - stack-a_cmp-c_dev_plan
-      - stack-b_cmp-a_dev_deploy
-      - stack-b_cmp-a_dev_plan
-      - stack-b_cmp-b_dev_deploy
-      - stack-b_cmp-b_dev_plan
-      - stack-c_cmp-a_dev_deploy
-      - stack-c_cmp-a_dev_plan
-      - stack-c_cmp-b_dev_deploy
-      - stack-c_cmp-b_dev_plan
-      - stack-c_cmp-c_dev_deploy
-      - stack-c_cmp-c_dev_plan
-      - stack-d_cmp-a_dev_deploy
-      - stack-d_cmp-a_dev_plan
-      - stack-e_cmp-a_dev_deploy
-      - stack-e_cmp-a_dev_plan
-      - stack-e_cmp-b_dev_deploy
-      - stack-e_cmp-b_dev_plan
-      - stack-f_cmp-a_dev_deploy
-      - stack-f_cmp-a_dev_plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo tofu plan
+    secrets: inherit
+    uses: ./.github/workflows/stack-f_cmp-a_stg.yml
   stack-f_cmp-a_validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: echo tofu validate
 name: CI
 "on":

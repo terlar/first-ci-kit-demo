@@ -1,0 +1,15 @@
+jobs:
+  stack-a_cmp-b_dev_deploy:
+    needs:
+      - stack-a_cmp-b_dev_plan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: echo tofu deploy
+  stack-a_cmp-b_dev_plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: echo tofu plan
+"on":
+  workflow_call: {}
