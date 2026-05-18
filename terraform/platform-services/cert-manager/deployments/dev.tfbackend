@@ -1,3 +1,0 @@
-bucket = "myorg-terraform-state-dev"
-key    = "platform-services/cert-manager/terraform.tfstate"
-region = "eu-west-1"
