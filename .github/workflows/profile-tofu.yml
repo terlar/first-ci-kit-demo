@@ -37,10 +37,10 @@ jobs:
   workflow_call:
     inputs:
       changes:
-        description: Change detection JSON from parent pipeline
+        description: Change detection JSON passed from the calling workflow.
         type: string
       changes_key:
-        description: Key identifying this job in the changes JSON
+        description: Key identifying this job in the change detection map.
         type: string
       component:
         description: Component name
