@@ -1,0 +1,3 @@
+bucket = "myorg-terraform-state-dev"
+key    = "observability/logging/terraform.tfstate"
+region = "eu-west-1"
