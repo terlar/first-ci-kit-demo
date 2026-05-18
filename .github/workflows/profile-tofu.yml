@@ -1,4 +1,6 @@
 env:
+  CHANGES: ${{ inputs.changes }}
+  CHANGES_KEY: ${{ inputs.changes_key }}
   COMPONENT: ${{ inputs.component }}
   DEPLOYMENT: ${{ inputs.deployment }}
   STACK: ${{ inputs.stack }}
@@ -34,6 +36,12 @@ jobs:
 "on":
   workflow_call:
     inputs:
+      changes:
+        description: Change detection JSON from parent pipeline
+        type: string
+      changes_key:
+        description: Key identifying this job in the changes JSON
+        type: string
       component:
         description: Component name
         type: string
