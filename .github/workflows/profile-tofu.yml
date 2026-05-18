@@ -22,7 +22,7 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: ${{ inputs.stack }}-${{ inputs.component }}-${{ inputs.deployment }}-plan
-          path: terraform/$STACK/$COMPONENT
+          path: terraform/${{ env.STACK }}/${{ env.COMPONENT }}
       - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
       - run: tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan
   plan:
@@ -45,7 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.stack }}-${{ inputs.component }}-${{ inputs.deployment }}-plan
-          path: terraform/$STACK/$COMPONENT/tfplan
+          path: terraform/${{ env.STACK }}/${{ env.COMPONENT }}/tfplan
           retention-days: 7
 "on":
   workflow_call:
