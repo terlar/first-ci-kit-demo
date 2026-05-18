@@ -1,0 +1,3 @@
+bucket = "myorg-terraform-state-dev"
+key    = "cluster/control-plane/terraform.tfstate"
+region = "eu-west-1"
