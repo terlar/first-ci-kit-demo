@@ -68,7 +68,7 @@
           ];
           artifacts.upload = {
             name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
-            paths = [ "terraform/$STACK/$COMPONENT/tfplan" ];
+            paths = [ "terraform/\${{ env.STACK }}/\${{ env.COMPONENT }}/tfplan" ];
             retentionDays = 7;
           };
         };
@@ -83,7 +83,7 @@
           ];
           artifacts.download = {
             name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
-            path = "terraform/$STACK/$COMPONENT";
+            path = "terraform/\${{ env.STACK }}/\${{ env.COMPONENT }}";
           };
         };
       };
