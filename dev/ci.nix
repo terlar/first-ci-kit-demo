@@ -10,6 +10,7 @@
       };
 
       gitlab-ci = {
+        defaultStage = "main";
         transformJobName =
           name: "$[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_${name}";
         inputs = {
