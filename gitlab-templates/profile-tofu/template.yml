@@ -16,6 +16,10 @@ spec:
       description: Stack name
 ---
 $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_deploy:
+  before_script:
+    - nix print-dev-env .#profile-tofu > profile-tofu.sh
+    - . profile-tofu.sh
+  image: nixos/nix
   needs:
     - artifacts: true
       job: $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan
@@ -34,6 +38,10 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan:
     paths:
       - terraform/$STACK/$COMPONENT/tfplan
     public: false
+  before_script:
+    - nix print-dev-env .#profile-tofu > profile-tofu.sh
+    - . profile-tofu.sh
+  image: nixos/nix
   script:
     - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
     - tofu -chdir=terraform/$STACK/$COMPONENT validate
@@ -43,4 +51,3 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan:
     DEPLOYMENT: $[[ inputs.deployment ]]
     STACK: $[[ inputs.stack ]]
     TF_IN_AUTOMATION: "1"
-asComponent: true

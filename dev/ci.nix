@@ -24,7 +24,6 @@
             description = "GitLab CI rules for the deploy job.";
           };
         };
-        settings.asComponent = true;
       };
 
       github-actions = {
@@ -34,20 +33,27 @@
 
       jobSets.profile-tofu = {
         tags = [ "profile:tofu" ];
-        jobDefaults.github-actions.steps = lib.mkOrder 550 [
-          {
-            name = "Install Nix";
-            uses = "cachix/install-nix-action@v31";
-            "with".install_url = "https://releases.nixos.org/nix/nix-2.33.0/install";
-          }
-          {
-            name = "Enter profile";
-            run = ''
-              nix print-dev-env .#profile-tofu > profile-tofu.sh
-              echo "BASH_ENV=$PWD/profile-tofu.sh" >> "$GITHUB_ENV"
-            '';
-          }
-        ];
+        jobDefaults = {
+          image = "nixos/nix";
+          gitlab-ci.before_script = [
+            "nix print-dev-env .#profile-tofu > profile-tofu.sh"
+            ". profile-tofu.sh"
+          ];
+          github-actions.steps = lib.mkOrder 550 [
+            {
+              name = "Install Nix";
+              uses = "cachix/install-nix-action@v31";
+              "with".install_url = "https://releases.nixos.org/nix/nix-2.33.0/install";
+            }
+            {
+              name = "Enter profile";
+              run = ''
+                nix print-dev-env .#profile-tofu > profile-tofu.sh
+                echo "BASH_ENV=$PWD/profile-tofu.sh" >> "$GITHUB_ENV"
+              '';
+            }
+          ];
+        };
       };
 
       jobs = {
