@@ -32,6 +32,10 @@
         };
       };
 
+      devShells.profile-tofu = pkgs.mkShell {
+        packages = [ pkgs.opentofu ];
+      };
+
       pre-commit.check.enable = false;
       pre-commit.settings.hooks = {
         first-ci-kit-gen-github-actions = {
