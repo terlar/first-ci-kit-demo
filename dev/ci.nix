@@ -7,8 +7,6 @@
         stack.description = "Stack name";
         component.description = "Component name";
         deployment.description = "Deployment name";
-        changes.description = "Change detection JSON from parent pipeline";
-        changes_key.description = "Key identifying this job in the changes JSON";
       };
 
       gitlab-ci = {
@@ -29,7 +27,10 @@
         settings.asComponent = true;
       };
 
-      github-actions.defaultRunsOn = "ubuntu-latest";
+      github-actions = {
+        defaultRunsOn = "ubuntu-latest";
+        changes.enable = true;
+      };
 
       jobs = {
         plan = {
