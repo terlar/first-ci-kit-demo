@@ -1,0 +1,34 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/\\.nix$/"],
+      "matchStrings": [
+        "\"(?<depName>[\\w-]+/[\\w-]+)@(?<currentValue>[\\w.]+)\""
+      ],
+      "datasourceTemplate": "github-tags",
+      "depTypeTemplate": "action",
+      "versioningTemplate": "regex:^v(?<major>\\d+)$"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/\\.nix$/"],
+      "matchStrings": [
+        "https://releases\\.nixos\\.org/nix/nix-(?<currentValue>[\\d.]+)/install"
+      ],
+      "depNameTemplate": "NixOS/nix",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^(?<version>.+)$",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["github-tags"],
+      "matchDepTypes": ["action"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "enabled": false
+    }
+  ]
+}

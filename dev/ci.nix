@@ -32,8 +32,27 @@
         changes.enable = true;
       };
 
+      jobSets.profile-tofu = {
+        tags = [ "profile:tofu" ];
+        jobDefaults.github-actions.steps = lib.mkOrder 550 [
+          {
+            name = "Install Nix";
+            uses = "cachix/install-nix-action@v31";
+            "with".install_url = "https://releases.nixos.org/nix/nix-2.33.0/install";
+          }
+          {
+            name = "Enter profile";
+            run = ''
+              nix print-dev-env .#profile-tofu > profile-tofu.sh
+              echo "BASH_ENV=$PWD/profile-tofu.sh" >> "$GITHUB_ENV"
+            '';
+          }
+        ];
+      };
+
       jobs = {
         plan = {
+          tags = [ "profile:tofu" ];
           env.TF_IN_AUTOMATION = "1";
           commands = [
             "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend"
@@ -48,6 +67,7 @@
         };
 
         deploy = {
+          tags = [ "profile:tofu" ];
           env.TF_IN_AUTOMATION = "1";
           needs = [ { job = "plan"; } ];
           commands = [
