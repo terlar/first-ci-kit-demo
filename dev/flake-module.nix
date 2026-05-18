@@ -46,6 +46,10 @@
         first-ci-kit-gen-gitlab-ci = {
           enable = true;
           files = "^dev/(ci|stacks).nix$";
+          settings.pipelines = {
+            default = ".gitlab-ci.yml";
+            profile-tofu = "gitlab-templates/profile-tofu/template.yml";
+          };
         };
       };
     };

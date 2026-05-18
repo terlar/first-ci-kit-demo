@@ -1,0 +1,46 @@
+spec:
+  inputs:
+    component:
+      description: Component name
+    deploy_rules:
+      default: []
+      description: GitLab CI rules for the deploy job.
+      type: array
+    deployment:
+      description: Deployment name
+    rules:
+      default: []
+      description: GitLab CI rules for the plan job.
+      type: array
+    stack:
+      description: Stack name
+---
+$[[ inputs.stack ]]:$[[ inputs.component ]]:$[[ inputs.deployment ]]:deploy:
+  needs:
+    - artifacts: true
+      job: $[[ inputs.stack ]]:$[[ inputs.component ]]:$[[ inputs.deployment ]]:plan
+      optional: false
+  script:
+    - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
+    - tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan
+  variables:
+    COMPONENT: $[[ inputs.component ]]
+    DEPLOYMENT: $[[ inputs.deployment ]]
+    STACK: $[[ inputs.stack ]]
+    TF_IN_AUTOMATION: "1"
+$[[ inputs.stack ]]:$[[ inputs.component ]]:$[[ inputs.deployment ]]:plan:
+  artifacts:
+    expire_in: 7 days
+    paths:
+      - terraform/$STACK/$COMPONENT/tfplan
+    public: false
+  script:
+    - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
+    - tofu -chdir=terraform/$STACK/$COMPONENT validate
+    - tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT.tfvars -out=tfplan
+  variables:
+    COMPONENT: $[[ inputs.component ]]
+    DEPLOYMENT: $[[ inputs.deployment ]]
+    STACK: $[[ inputs.stack ]]
+    TF_IN_AUTOMATION: "1"
+asComponent: true

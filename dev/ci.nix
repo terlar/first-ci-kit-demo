@@ -135,7 +135,7 @@
                     deployment = deployment;
                   };
                   gitlab-ci = {
-                    templatePath = "ci/gitlab-templates/profile-tofu/template.yml";
+                    templatePath = "gitlab-templates/profile-tofu/template.yml";
                     rulesInput = "rules";
                     pushRulesInput = "deploy_rules";
                   };
