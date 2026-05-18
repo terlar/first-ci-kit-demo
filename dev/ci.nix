@@ -1,98 +1,94 @@
 { lib, ... }:
 
 {
-  first-ci-kit.pipelines.profile-tofu = {
-    inputs = {
-      stack.description = "Stack name";
-      component.description = "Component name";
-      deployment.description = "Deployment name";
-    };
-
-    gitlab-ci = {
-      transformJobName =
-        name: "$[[ inputs.stack ]]:$[[ inputs.component ]]:$[[ inputs.deployment ]]:${name}";
+  first-ci-kit.pipelines = {
+    profile-tofu = {
       inputs = {
-        rules = {
-          type = "array";
-          default = [ ];
-          description = "GitLab CI rules for the plan job.";
-        };
-        deploy_rules = {
-          type = "array";
-          default = [ ];
-          description = "GitLab CI rules for the deploy job.";
-        };
-      };
-      settings.asComponent = true;
-    };
-
-    github-actions.defaultRunsOn = "ubuntu-latest";
-
-    jobs = {
-      plan = {
-        env.TF_IN_AUTOMATION = "1";
-        commands = [
-          "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend"
-          "tofu -chdir=terraform/$STACK/$COMPONENT validate"
-          "tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT.tfvars -out=tfplan"
-        ];
-        artifacts.upload = {
-          name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
-          paths = [ "terraform/$STACK/$COMPONENT/tfplan" ];
-          retentionDays = 7;
-        };
+        stack.description = "Stack name";
+        component.description = "Component name";
+        deployment.description = "Deployment name";
       };
 
-      deploy = {
-        env.TF_IN_AUTOMATION = "1";
-        needs = [ { job = "plan"; } ];
-        commands = [
-          "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend"
-          "tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan"
-        ];
-        artifacts.download = {
-          name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
-          path = "terraform/$STACK/$COMPONENT";
-        };
-      };
-    };
-  };
-
-  first-ci-kit.pipelines.default = lib.mkMerge [
-    {
       gitlab-ci = {
-        defaultStage = "main";
-        transformJobName = builtins.replaceStrings [ "_" ] [ ":" ];
-        settings = {
-          default.image = "alpine";
-          stages = [ "main" ];
-          workflow.rules = [
-            { "if" = "$CI_MERGE_REQUEST_TARGET_BRANCH_PROTECTED"; }
-            { "if" = "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"; }
+        transformJobName =
+          name: "$[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_${name}";
+        inputs = {
+          rules = {
+            type = "array";
+            default = [ ];
+            description = "GitLab CI rules for the plan job.";
+          };
+          deploy_rules = {
+            type = "array";
+            default = [ ];
+            description = "GitLab CI rules for the deploy job.";
+          };
+        };
+        settings.asComponent = true;
+      };
+
+      github-actions.defaultRunsOn = "ubuntu-latest";
+
+      jobs = {
+        plan = {
+          env.TF_IN_AUTOMATION = "1";
+          commands = [
+            "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend"
+            "tofu -chdir=terraform/$STACK/$COMPONENT validate"
+            "tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT.tfvars -out=tfplan"
           ];
+          artifacts.upload = {
+            name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
+            paths = [ "terraform/$STACK/$COMPONENT/tfplan" ];
+            retentionDays = 7;
+          };
+        };
+
+        deploy = {
+          env.TF_IN_AUTOMATION = "1";
+          needs = [ { job = "plan"; } ];
+          commands = [
+            "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend"
+            "tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan"
+          ];
+          artifacts.download = {
+            name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
+            path = "terraform/$STACK/$COMPONENT";
+          };
         };
       };
+    };
 
-      github-actions = {
-        defaultRunsOn = "ubuntu-latest";
-        summaryJob.enable = true;
-        settings = {
-          name = "CI";
-          on.push.branches = [ "main" ];
-          on.pull_request.branches = [ "main" ];
+    default = lib.mkMerge [
+      {
+        gitlab-ci = {
+          defaultStage = "main";
+          settings = {
+            default.image = "alpine";
+            stages = [ "main" ];
+            workflow.rules = [
+              { "if" = "$CI_MERGE_REQUEST_TARGET_BRANCH_PROTECTED"; }
+              { "if" = "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"; }
+            ];
+          };
         };
-      };
 
-      process-compose.cli.environment.PC_DISABLE_TUI = true;
+        github-actions = {
+          defaultRunsOn = "ubuntu-latest";
+          summaryJob.enable = true;
+          settings = {
+            name = "CI";
+          };
+        };
 
-      jobSets = {
-        stg.needs = [ { jobSet = "dev"; } ];
-      };
-    }
+        process-compose.cli.environment.PC_DISABLE_TUI = true;
 
-    (
-      { config, ... }:
-      lib.pipe ./stacks.nix [
+        jobSets = {
+          stg.needs = [ { jobSet = "dev"; } ];
+        };
+      }
+
+      (lib.pipe ./stacks.nix [
         import
         (lib.mapAttrsToList (
           stack: v:
@@ -127,13 +123,18 @@
               };
 
               jobs."${stack}_${component}_${deployment}" = {
+                branches.default = {
+                  changes.paths = [
+                    "terraform/${stack}/${component}/**"
+                    "terraform/modules/component/**"
+                  ];
+                  triggers.onPush = true;
+                  triggers.onMergeRequest = true;
+                };
+
                 pipelineCall = {
                   pipeline = "profile-tofu";
-                  inputs = {
-                    stack = stack;
-                    component = component;
-                    deployment = deployment;
-                  };
+                  inputs = { inherit stack component deployment; };
                   gitlab-ci = {
                     templatePath = "gitlab-templates/profile-tofu/template.yml";
                     rulesInput = "rules";
@@ -146,7 +147,7 @@
         ))
         lib.flatten
         (builtins.foldl' lib.recursiveUpdate { })
-      ]
-    )
-  ];
+      ])
+    ];
+  };
 }

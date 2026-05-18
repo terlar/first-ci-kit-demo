@@ -15,10 +15,10 @@ spec:
     stack:
       description: Stack name
 ---
-$[[ inputs.stack ]]:$[[ inputs.component ]]:$[[ inputs.deployment ]]:deploy:
+$[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_deploy:
   needs:
     - artifacts: true
-      job: $[[ inputs.stack ]]:$[[ inputs.component ]]:$[[ inputs.deployment ]]:plan
+      job: $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan
       optional: false
   script:
     - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
@@ -28,7 +28,7 @@ $[[ inputs.stack ]]:$[[ inputs.component ]]:$[[ inputs.deployment ]]:deploy:
     DEPLOYMENT: $[[ inputs.deployment ]]
     STACK: $[[ inputs.stack ]]
     TF_IN_AUTOMATION: "1"
-$[[ inputs.stack ]]:$[[ inputs.component ]]:$[[ inputs.deployment ]]:plan:
+$[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan:
   artifacts:
     expire_in: 7 days
     paths:

@@ -1,189 +1,450 @@
 jobs:
+  changes:
+    outputs:
+      changes: ${{ steps.diff.outputs.changes }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - env:
+          DIFF_PATHS: |-
+            cluster_control-plane_dev:terraform/cluster/control-plane/**|terraform/modules/component/**
+            cluster_control-plane_stg:terraform/cluster/control-plane/**|terraform/modules/component/**
+            cluster_node-pools_dev:terraform/cluster/node-pools/**|terraform/modules/component/**
+            cluster_node-pools_stg:terraform/cluster/node-pools/**|terraform/modules/component/**
+            database_postgres_dev:terraform/database/postgres/**|terraform/modules/component/**
+            database_postgres_stg:terraform/database/postgres/**|terraform/modules/component/**
+            database_redis_dev:terraform/database/redis/**|terraform/modules/component/**
+            database_redis_stg:terraform/database/redis/**|terraform/modules/component/**
+            networking_dns_dev:terraform/networking/dns/**|terraform/modules/component/**
+            networking_dns_stg:terraform/networking/dns/**|terraform/modules/component/**
+            networking_vpc_dev:terraform/networking/vpc/**|terraform/modules/component/**
+            networking_vpc_stg:terraform/networking/vpc/**|terraform/modules/component/**
+            observability_alerting_dev:terraform/observability/alerting/**|terraform/modules/component/**
+            observability_alerting_stg:terraform/observability/alerting/**|terraform/modules/component/**
+            observability_logging_dev:terraform/observability/logging/**|terraform/modules/component/**
+            observability_logging_stg:terraform/observability/logging/**|terraform/modules/component/**
+            observability_metrics_dev:terraform/observability/metrics/**|terraform/modules/component/**
+            observability_metrics_stg:terraform/observability/metrics/**|terraform/modules/component/**
+            platform-services_cert-manager_dev:terraform/platform-services/cert-manager/**|terraform/modules/component/**
+            platform-services_cert-manager_stg:terraform/platform-services/cert-manager/**|terraform/modules/component/**
+            platform-services_ingress_dev:terraform/platform-services/ingress/**|terraform/modules/component/**
+            platform-services_ingress_stg:terraform/platform-services/ingress/**|terraform/modules/component/**
+            security_certs_dev:terraform/security/certs/**|terraform/modules/component/**
+            security_certs_stg:terraform/security/certs/**|terraform/modules/component/**
+            security_iam_dev:terraform/security/iam/**|terraform/modules/component/**
+            security_iam_stg:terraform/security/iam/**|terraform/modules/component/**
+          FORCE_RUN_ALL: ${{ inputs.force_run_all }}
+          GITHUB_EVENT_AFTER: ${{ github.event.after }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+        id: diff
+        run: |
+          case "$GITHUB_EVENT_NAME" in
+          push)
+          	first_commit="$GITHUB_EVENT_BEFORE"
+          	last_commit="$GITHUB_EVENT_AFTER"
+          	git fetch origin "$first_commit"
+          	;;
+          pull_request)
+          	first_commit="origin/$GITHUB_BASE_REF"
+          	last_commit="origin/$GITHUB_HEAD_REF"
+          	git fetch origin "$GITHUB_BASE_REF" "$GITHUB_HEAD_REF"
+          	;;
+          workflow_dispatch)
+          	change_lines=()
+          	for p in $DIFF_PATHS; do
+          		group="${p%:*}"
+          		if [[ "${FORCE_RUN_ALL:-}" == "true" ]]; then
+          			change_lines+=("\"$group\":true")
+          		else
+          			change_lines+=("\"$group\":false")
+          		fi
+          	done
+          	change_object_body="$(printf '%s\n' "${change_lines[@]}" | paste -sd,)"
+          	echo "changes={$change_object_body}" >>"$GITHUB_OUTPUT"
+          	if [[ "${FORCE_RUN_ALL:-}" == "true" ]]; then
+          		echo "## All jobs affected (change detection skipped)" >>"$GITHUB_STEP_SUMMARY"
+          	else
+          		echo "## No jobs affected (set force_run_all to run all jobs)" >>"$GITHUB_STEP_SUMMARY"
+          	fi
+          	exit 0
+          	;;
+          esac
+
+          files=$(git diff --name-only --diff-filter=d "${first_commit}" "${last_commit}")
+          change_lines=()
+          for p in $DIFF_PATHS; do
+          	group="${p%:*}"
+          	pattern="${p##*:}"
+          	# Convert glob pattern to ERE for grep.
+          	# Use placeholders for ** patterns first, then convert *, then restore
+          	# placeholders — this prevents the * in ERE replacements (e.g. .*)
+          	# from being incorrectly re-converted by the s|\*|[^/]*| step.
+          	#   /**/   →  /(.*/)?   (zero or more intermediate directories)
+          	#   /**    →  (/.*)?    (optional slash + anything, at end)
+          	#   **/    →  (.*/)?    (zero or more leading directories)
+          	#   **     →  .*        (any characters including slashes)
+          	#   *      →  [^/]*     (any characters within a single path component)
+          	#   .      →  \.        (literal dot)
+          	regex=$(printf '%s' "$pattern" |
+          		sed \
+          			-e 's/\./\\./g' \
+          			-e 's|/\*\*/|__DIRANY__|g' \
+          			-e 's|/\*\*|__SLASHANY__|g' \
+          			-e 's|\*\*/|__ANYSLASH__|g' \
+          			-e 's|\*\*|__ANYANY__|g' \
+          			-e 's|\*|[^/]*|g' \
+          			-e 's|__DIRANY__|/(.*/)?|g' \
+          			-e 's|__SLASHANY__|(/.*)?|g' \
+          			-e 's|__ANYSLASH__|(.*/)?|g' \
+          			-e 's|__ANYANY__|.*|g')
+          	if echo "$files" | grep -qE "^(${regex})$"; then
+          		change_lines+=("\"$group\":true")
+          	else
+          		change_lines+=("\"$group\":false")
+          	fi
+          done
+
+          change_object_body="$(printf '%s\n' "${change_lines[@]}" | paste -sd,)"
+          echo "changes={$change_object_body}" >>"$GITHUB_OUTPUT"
+
+          affected_jobs=()
+          for line in "${change_lines[@]}"; do
+          	if [[ "$line" == *":true"* ]]; then
+          		affected_jobs+=("${line//\"/}")
+          		affected_jobs[-1]="${affected_jobs[-1]%:*}"
+          	fi
+          done
+
+          if [[ ${#affected_jobs[@]} -gt 0 ]]; then
+          	echo "Affected jobs (${#affected_jobs[@]}):"
+          	printf '  %s\n' "${affected_jobs[@]}"
+          	{
+          		echo "## Affected jobs (${#affected_jobs[@]})"
+          		printf -- '- %s\n' "${affected_jobs[@]}"
+          	} >>"$GITHUB_STEP_SUMMARY"
+          else
+          	echo "No affected jobs."
+          	echo "## No affected jobs" >>"$GITHUB_STEP_SUMMARY"
+          fi
+        shell: bash
   cluster_control-plane_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['cluster_control-plane_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: cluster_control-plane_dev
       component: control-plane
       deployment: dev
       stack: cluster
   cluster_control-plane_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['cluster_control-plane_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: cluster_control-plane_stg
       component: control-plane
       deployment: stg
       stack: cluster
   cluster_node-pools_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['cluster_node-pools_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: cluster_node-pools_dev
       component: node-pools
       deployment: dev
       stack: cluster
   cluster_node-pools_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['cluster_node-pools_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: cluster_node-pools_stg
       component: node-pools
       deployment: stg
       stack: cluster
   database_postgres_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['database_postgres_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: database_postgres_dev
       component: postgres
       deployment: dev
       stack: database
   database_postgres_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['database_postgres_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: database_postgres_stg
       component: postgres
       deployment: stg
       stack: database
   database_redis_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['database_redis_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: database_redis_dev
       component: redis
       deployment: dev
       stack: database
   database_redis_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['database_redis_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: database_redis_stg
       component: redis
       deployment: stg
       stack: database
   networking_dns_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['networking_dns_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: networking_dns_dev
       component: dns
       deployment: dev
       stack: networking
   networking_dns_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['networking_dns_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: networking_dns_stg
       component: dns
       deployment: stg
       stack: networking
   networking_vpc_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['networking_vpc_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: networking_vpc_dev
       component: vpc
       deployment: dev
       stack: networking
   networking_vpc_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['networking_vpc_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: networking_vpc_stg
       component: vpc
       deployment: stg
       stack: networking
   observability_alerting_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_alerting_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: observability_alerting_dev
       component: alerting
       deployment: dev
       stack: observability
   observability_alerting_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_alerting_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: observability_alerting_stg
       component: alerting
       deployment: stg
       stack: observability
   observability_logging_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_logging_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: observability_logging_dev
       component: logging
       deployment: dev
       stack: observability
   observability_logging_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_logging_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: observability_logging_stg
       component: logging
       deployment: stg
       stack: observability
   observability_metrics_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_metrics_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: observability_metrics_dev
       component: metrics
       deployment: dev
       stack: observability
   observability_metrics_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_metrics_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: observability_metrics_stg
       component: metrics
       deployment: stg
       stack: observability
   platform-services_cert-manager_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['platform-services_cert-manager_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: platform-services_cert-manager_dev
       component: cert-manager
       deployment: dev
       stack: platform-services
   platform-services_cert-manager_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['platform-services_cert-manager_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: platform-services_cert-manager_stg
       component: cert-manager
       deployment: stg
       stack: platform-services
   platform-services_ingress_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['platform-services_ingress_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: platform-services_ingress_dev
       component: ingress
       deployment: dev
       stack: platform-services
   platform-services_ingress_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['platform-services_ingress_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: platform-services_ingress_stg
       component: ingress
       deployment: stg
       stack: platform-services
   security_certs_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['security_certs_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: security_certs_dev
       component: certs
       deployment: dev
       stack: security
   security_certs_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['security_certs_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: security_certs_stg
       component: certs
       deployment: stg
       stack: security
   security_iam_dev:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['security_iam_dev'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: security_iam_dev
       component: iam
       deployment: dev
       stack: security
   security_iam_stg:
+    if: ${{ fromJSON(needs.changes.outputs.changes)['security_iam_stg'] == true }}
+    needs:
+      - changes
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
+      changes: ${{ needs.changes.outputs.changes }}
+      changes_key: security_iam_stg
       component: iam
       deployment: stg
       stack: security
   summary:
     if: ${{ always() }}
     needs:
+      - changes
       - cluster_control-plane_dev
       - cluster_control-plane_stg
       - cluster_node-pools_dev
@@ -304,3 +565,9 @@ name: CI
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      force_run_all:
+        default: false
+        description: Skip change detection and run all jobs
+        type: boolean

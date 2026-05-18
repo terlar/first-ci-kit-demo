@@ -3,184 +3,600 @@ default:
 include:
   - inputs:
       component: control-plane
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/cluster/control-plane/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/cluster/control-plane/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/cluster/control-plane/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: cluster
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: control-plane
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/cluster/control-plane/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/cluster/control-plane/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/cluster/control-plane/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: cluster
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: node-pools
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/cluster/node-pools/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/cluster/node-pools/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/cluster/node-pools/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: cluster
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: node-pools
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/cluster/node-pools/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/cluster/node-pools/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/cluster/node-pools/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: cluster
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: postgres
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/database/postgres/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/database/postgres/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/database/postgres/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: database
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: postgres
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/database/postgres/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/database/postgres/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/database/postgres/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: database
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: redis
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/database/redis/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/database/redis/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/database/redis/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: database
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: redis
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/database/redis/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/database/redis/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/database/redis/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: database
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: dns
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/networking/dns/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/networking/dns/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/networking/dns/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: networking
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: dns
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/networking/dns/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/networking/dns/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/networking/dns/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: networking
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: vpc
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/networking/vpc/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/networking/vpc/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/networking/vpc/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: networking
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: vpc
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/networking/vpc/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/networking/vpc/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/networking/vpc/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: networking
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: alerting
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/observability/alerting/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/observability/alerting/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/observability/alerting/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: observability
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: alerting
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/observability/alerting/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/observability/alerting/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/observability/alerting/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: observability
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: logging
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/observability/logging/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/observability/logging/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/observability/logging/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: observability
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: logging
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/observability/logging/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/observability/logging/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/observability/logging/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: observability
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: metrics
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/observability/metrics/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/observability/metrics/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/observability/metrics/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: observability
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: metrics
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/observability/metrics/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/observability/metrics/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/observability/metrics/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: observability
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: cert-manager
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/platform-services/cert-manager/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/platform-services/cert-manager/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/platform-services/cert-manager/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: platform-services
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: cert-manager
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/platform-services/cert-manager/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/platform-services/cert-manager/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/platform-services/cert-manager/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: platform-services
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: ingress
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/platform-services/ingress/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/platform-services/ingress/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/platform-services/ingress/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: platform-services
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: ingress
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/platform-services/ingress/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/platform-services/ingress/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/platform-services/ingress/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: platform-services
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: certs
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/security/certs/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/security/certs/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/security/certs/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: security
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: certs
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/security/certs/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/security/certs/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/security/certs/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: security
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: iam
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/security/iam/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: dev
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/security/iam/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/security/iam/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: security
     local: gitlab-templates/profile-tofu/template.yml
   - inputs:
       component: iam
-      deploy_rules: []
+      deploy_rules:
+        - changes:
+            paths:
+              - terraform/security/iam/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       deployment: stg
-      rules: []
+      rules:
+        - changes:
+            compare_to: $CI_DEFAULT_BRANCH
+            paths:
+              - terraform/security/iam/**
+              - terraform/modules/component/**
+          if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH
+        - changes:
+            paths:
+              - terraform/security/iam/**
+              - terraform/modules/component/**
+          if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       stack: security
     local: gitlab-templates/profile-tofu/template.yml
 stages:
