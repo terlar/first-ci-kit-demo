@@ -1,0 +1,3 @@
+bucket = "myorg-terraform-state-stg"
+key    = "security/certs/terraform.tfstate"
+region = "eu-west-1"
