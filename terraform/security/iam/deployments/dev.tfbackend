@@ -1,3 +1,0 @@
-bucket = "myorg-terraform-state-dev"
-key    = "security/iam/terraform.tfstate"
-region = "eu-west-1"

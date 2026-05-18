@@ -1,3 +1,0 @@
-bucket = "myorg-terraform-state-dev"
-key    = "cluster/node-pools/terraform.tfstate"
-region = "eu-west-1"

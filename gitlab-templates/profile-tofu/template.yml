@@ -27,6 +27,7 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_deploy:
   script:
     - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
     - tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan
+  stage: main
   variables:
     COMPONENT: $[[ inputs.component ]]
     DEPLOYMENT: $[[ inputs.deployment ]]
@@ -46,6 +47,7 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan:
     - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
     - tofu -chdir=terraform/$STACK/$COMPONENT validate
     - tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT.tfvars -out=tfplan
+  stage: main
   variables:
     COMPONENT: $[[ inputs.component ]]
     DEPLOYMENT: $[[ inputs.deployment ]]
