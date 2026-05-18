@@ -1,73 +1,92 @@
 {
-  stack-a = {
+  networking = {
     deployments = {
       dev = { };
       stg = { };
     };
 
     components = {
-      cmp-a = { };
-      cmp-b.needs = [ { component = "cmp-a"; } ];
-      cmp-c = { };
+      vpc = { };
+      dns = { };
     };
   };
-  stack-b = {
+
+  security = {
     deployments = {
       dev = { };
       stg = { };
     };
 
     components = {
-      cmp-a.needs = [
+      iam = { };
+      certs = { };
+    };
+  };
+
+  cluster = {
+    deployments = {
+      dev = { };
+      stg = { };
+    };
+
+    components = {
+      control-plane.needs = [ { stack = "networking"; } ];
+      node-pools.needs = [ { component = "control-plane"; } ];
+    };
+  };
+
+  database = {
+    deployments = {
+      dev = { };
+      stg = { };
+    };
+
+    components = {
+      postgres.needs = [
+        { stack = "networking"; }
         {
-          stack = "stack-a";
-          component = "cmp-b";
+          stack = "security";
+          component = "iam";
         }
       ];
-      cmp-b.needs = [ { stack = "stack-a"; } ];
+      redis.needs = [ { stack = "networking"; } ];
     };
   };
-  stack-c = {
+
+  observability = {
     deployments = {
       dev = { };
       stg = { };
     };
 
     components = {
-      cmp-a = { };
-      cmp-b = { };
-      cmp-c = { };
+      metrics.needs = [ { stack = "cluster"; } ];
+      logging.needs = [ { stack = "cluster"; } ];
+      alerting.needs = [ { component = "metrics"; } ];
     };
   };
-  stack-d = {
+
+  platform-services = {
     deployments = {
       dev = { };
       stg = { };
     };
 
     components = {
-      cmp-a.needs = [ { stack = "stack-c"; } ];
-    };
-  };
-  stack-e = {
-    deployments = {
-      dev = { };
-      stg = { };
-    };
-
-    components = {
-      cmp-a = { };
-      cmp-b = { };
-    };
-  };
-  stack-f = {
-    deployments = {
-      dev = { };
-      stg = { };
-    };
-
-    components = {
-      cmp-a = { };
+      ingress.needs = [
+        { stack = "cluster"; }
+        {
+          stack = "security";
+          component = "certs";
+        }
+      ];
+      cert-manager.needs = [
+        { stack = "cluster"; }
+        {
+          stack = "networking";
+          component = "dns";
+        }
+      ];
     };
   };
 }
