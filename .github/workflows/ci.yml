@@ -130,9 +130,11 @@ jobs:
           fi
         shell: bash
   cluster_control-plane_dev:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['cluster_control-plane_dev'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['cluster_control-plane_dev'] == true && (needs.networking_dns_dev.result == 'success' || needs.networking_dns_dev.result == 'skipped') && (needs.networking_vpc_dev.result == 'success' || needs.networking_vpc_dev.result == 'skipped') }}
     needs:
       - changes
+      - networking_dns_dev
+      - networking_vpc_dev
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -142,9 +144,11 @@ jobs:
       deployment: dev
       stack: cluster
   cluster_control-plane_stg:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['cluster_control-plane_stg'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['cluster_control-plane_stg'] == true && (needs.networking_dns_stg.result == 'success' || needs.networking_dns_stg.result == 'skipped') && (needs.networking_vpc_stg.result == 'success' || needs.networking_vpc_stg.result == 'skipped') }}
     needs:
       - changes
+      - networking_dns_stg
+      - networking_vpc_stg
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -154,9 +158,10 @@ jobs:
       deployment: stg
       stack: cluster
   cluster_node-pools_dev:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['cluster_node-pools_dev'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['cluster_node-pools_dev'] == true && (needs.cluster_control-plane_dev.result == 'success' || needs.cluster_control-plane_dev.result == 'skipped') }}
     needs:
       - changes
+      - cluster_control-plane_dev
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -166,9 +171,10 @@ jobs:
       deployment: dev
       stack: cluster
   cluster_node-pools_stg:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['cluster_node-pools_stg'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['cluster_node-pools_stg'] == true && (needs.cluster_control-plane_stg.result == 'success' || needs.cluster_control-plane_stg.result == 'skipped') }}
     needs:
       - changes
+      - cluster_control-plane_stg
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -178,9 +184,12 @@ jobs:
       deployment: stg
       stack: cluster
   database_postgres_dev:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['database_postgres_dev'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['database_postgres_dev'] == true && (needs.networking_dns_dev.result == 'success' || needs.networking_dns_dev.result == 'skipped') && (needs.networking_vpc_dev.result == 'success' || needs.networking_vpc_dev.result == 'skipped') && (needs.security_iam_dev.result == 'success' || needs.security_iam_dev.result == 'skipped') }}
     needs:
       - changes
+      - networking_dns_dev
+      - networking_vpc_dev
+      - security_iam_dev
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -190,9 +199,12 @@ jobs:
       deployment: dev
       stack: database
   database_postgres_stg:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['database_postgres_stg'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['database_postgres_stg'] == true && (needs.networking_dns_stg.result == 'success' || needs.networking_dns_stg.result == 'skipped') && (needs.networking_vpc_stg.result == 'success' || needs.networking_vpc_stg.result == 'skipped') && (needs.security_iam_stg.result == 'success' || needs.security_iam_stg.result == 'skipped') }}
     needs:
       - changes
+      - networking_dns_stg
+      - networking_vpc_stg
+      - security_iam_stg
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -202,9 +214,11 @@ jobs:
       deployment: stg
       stack: database
   database_redis_dev:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['database_redis_dev'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['database_redis_dev'] == true && (needs.networking_dns_dev.result == 'success' || needs.networking_dns_dev.result == 'skipped') && (needs.networking_vpc_dev.result == 'success' || needs.networking_vpc_dev.result == 'skipped') }}
     needs:
       - changes
+      - networking_dns_dev
+      - networking_vpc_dev
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -214,9 +228,11 @@ jobs:
       deployment: dev
       stack: database
   database_redis_stg:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['database_redis_stg'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['database_redis_stg'] == true && (needs.networking_dns_stg.result == 'success' || needs.networking_dns_stg.result == 'skipped') && (needs.networking_vpc_stg.result == 'success' || needs.networking_vpc_stg.result == 'skipped') }}
     needs:
       - changes
+      - networking_dns_stg
+      - networking_vpc_stg
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -274,9 +290,10 @@ jobs:
       deployment: stg
       stack: networking
   observability_alerting_dev:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_alerting_dev'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['observability_alerting_dev'] == true && (needs.observability_metrics_dev.result == 'success' || needs.observability_metrics_dev.result == 'skipped') }}
     needs:
       - changes
+      - observability_metrics_dev
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -286,9 +303,10 @@ jobs:
       deployment: dev
       stack: observability
   observability_alerting_stg:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_alerting_stg'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['observability_alerting_stg'] == true && (needs.observability_metrics_stg.result == 'success' || needs.observability_metrics_stg.result == 'skipped') }}
     needs:
       - changes
+      - observability_metrics_stg
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -298,9 +316,11 @@ jobs:
       deployment: stg
       stack: observability
   observability_logging_dev:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_logging_dev'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['observability_logging_dev'] == true && (needs.cluster_control-plane_dev.result == 'success' || needs.cluster_control-plane_dev.result == 'skipped') && (needs.cluster_node-pools_dev.result == 'success' || needs.cluster_node-pools_dev.result == 'skipped') }}
     needs:
       - changes
+      - cluster_control-plane_dev
+      - cluster_node-pools_dev
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -310,9 +330,11 @@ jobs:
       deployment: dev
       stack: observability
   observability_logging_stg:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_logging_stg'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['observability_logging_stg'] == true && (needs.cluster_control-plane_stg.result == 'success' || needs.cluster_control-plane_stg.result == 'skipped') && (needs.cluster_node-pools_stg.result == 'success' || needs.cluster_node-pools_stg.result == 'skipped') }}
     needs:
       - changes
+      - cluster_control-plane_stg
+      - cluster_node-pools_stg
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -322,9 +344,11 @@ jobs:
       deployment: stg
       stack: observability
   observability_metrics_dev:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_metrics_dev'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['observability_metrics_dev'] == true && (needs.cluster_control-plane_dev.result == 'success' || needs.cluster_control-plane_dev.result == 'skipped') && (needs.cluster_node-pools_dev.result == 'success' || needs.cluster_node-pools_dev.result == 'skipped') }}
     needs:
       - changes
+      - cluster_control-plane_dev
+      - cluster_node-pools_dev
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -334,9 +358,11 @@ jobs:
       deployment: dev
       stack: observability
   observability_metrics_stg:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['observability_metrics_stg'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['observability_metrics_stg'] == true && (needs.cluster_control-plane_stg.result == 'success' || needs.cluster_control-plane_stg.result == 'skipped') && (needs.cluster_node-pools_stg.result == 'success' || needs.cluster_node-pools_stg.result == 'skipped') }}
     needs:
       - changes
+      - cluster_control-plane_stg
+      - cluster_node-pools_stg
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -346,9 +372,12 @@ jobs:
       deployment: stg
       stack: observability
   platform-services_cert-manager_dev:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['platform-services_cert-manager_dev'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['platform-services_cert-manager_dev'] == true && (needs.cluster_control-plane_dev.result == 'success' || needs.cluster_control-plane_dev.result == 'skipped') && (needs.cluster_node-pools_dev.result == 'success' || needs.cluster_node-pools_dev.result == 'skipped') && (needs.networking_dns_dev.result == 'success' || needs.networking_dns_dev.result == 'skipped') }}
     needs:
       - changes
+      - cluster_control-plane_dev
+      - cluster_node-pools_dev
+      - networking_dns_dev
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -358,9 +387,12 @@ jobs:
       deployment: dev
       stack: platform-services
   platform-services_cert-manager_stg:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['platform-services_cert-manager_stg'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['platform-services_cert-manager_stg'] == true && (needs.cluster_control-plane_stg.result == 'success' || needs.cluster_control-plane_stg.result == 'skipped') && (needs.cluster_node-pools_stg.result == 'success' || needs.cluster_node-pools_stg.result == 'skipped') && (needs.networking_dns_stg.result == 'success' || needs.networking_dns_stg.result == 'skipped') }}
     needs:
       - changes
+      - cluster_control-plane_stg
+      - cluster_node-pools_stg
+      - networking_dns_stg
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -370,9 +402,12 @@ jobs:
       deployment: stg
       stack: platform-services
   platform-services_ingress_dev:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['platform-services_ingress_dev'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['platform-services_ingress_dev'] == true && (needs.cluster_control-plane_dev.result == 'success' || needs.cluster_control-plane_dev.result == 'skipped') && (needs.cluster_node-pools_dev.result == 'success' || needs.cluster_node-pools_dev.result == 'skipped') && (needs.security_certs_dev.result == 'success' || needs.security_certs_dev.result == 'skipped') }}
     needs:
       - changes
+      - cluster_control-plane_dev
+      - cluster_node-pools_dev
+      - security_certs_dev
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:
@@ -382,9 +417,12 @@ jobs:
       deployment: dev
       stack: platform-services
   platform-services_ingress_stg:
-    if: ${{ fromJSON(needs.changes.outputs.changes)['platform-services_ingress_stg'] == true }}
+    if: ${{ always() && fromJSON(needs.changes.outputs.changes)['platform-services_ingress_stg'] == true && (needs.cluster_control-plane_stg.result == 'success' || needs.cluster_control-plane_stg.result == 'skipped') && (needs.cluster_node-pools_stg.result == 'success' || needs.cluster_node-pools_stg.result == 'skipped') && (needs.security_certs_stg.result == 'success' || needs.security_certs_stg.result == 'skipped') }}
     needs:
       - changes
+      - cluster_control-plane_stg
+      - cluster_node-pools_stg
+      - security_certs_stg
     secrets: inherit
     uses: ./.github/workflows/profile-tofu.yml
     with:

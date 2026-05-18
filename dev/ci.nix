@@ -146,6 +146,10 @@
               };
 
               jobs."${stack}_${component}_${deployment}" = {
+                tags = [
+                  "${stack}_${deployment}"
+                  "${stack}_${component}_${deployment}"
+                ];
                 branches.default = {
                   changes.paths = [
                     "terraform/${stack}/${component}/**"
