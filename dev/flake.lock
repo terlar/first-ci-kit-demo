@@ -55,18 +55,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1775735554,
-        "narHash": "sha256-baarncwoV5LoMoU1PjCOv58mU7FHqNjbESgyhbXrBfk=",
-        "ref": "github-improvements",
-        "rev": "f13c1d491b94dd8703ff09ad1a832ea49503efbb",
-        "revCount": 72,
-        "type": "git",
-        "url": "file:///home/terje/src/github.com/terlar/first-ci-kit"
+        "lastModified": 1778674895,
+        "narHash": "sha256-gZ94uDr8iK53EqgBLBwti3xb1hVVPXsUzXKzBq4x4Zg=",
+        "owner": "terlar",
+        "repo": "first-ci-kit",
+        "rev": "c51b9f510925315e1748084fd72b3ae4becdd828",
+        "type": "github"
       },
       "original": {
-        "ref": "github-improvements",
-        "type": "git",
-        "url": "file:///home/terje/src/github.com/terlar/first-ci-kit"
+        "owner": "terlar",
+        "repo": "first-ci-kit",
+        "type": "github"
       }
     },
     "flake-compat": {

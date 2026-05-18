@@ -3,35 +3,34 @@
 {
   first-ci-kit.pipelines.default = lib.mkMerge [
     {
-      pipeline = {
-        gitlab-ci = {
-          defaultStage = "main";
-          transformJobName = builtins.replaceStrings [ "_" ] [ ":" ];
-          settings = {
-            default.image = "alpine";
-            stages = [ "main" ];
-            workflow.rules = [
-              { "if" = "$CI_MERGE_REQUEST_TARGET_BRANCH_PROTECTED"; }
-              { "if" = "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"; }
-            ];
-          };
+      gitlab-ci = {
+        defaultStage = "main";
+        transformJobName = builtins.replaceStrings [ "_" ] [ ":" ];
+        settings = {
+          default.image = "alpine";
+          stages = [ "main" ];
+          workflow.rules = [
+            { "if" = "$CI_MERGE_REQUEST_TARGET_BRANCH_PROTECTED"; }
+            { "if" = "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"; }
+          ];
         };
-
-        github-actions = {
-          defaultRunsOn = "ubuntu-latest";
-          settings = {
-            name = "CI";
-            on.push = {
-              branches = [ "main" ];
-            };
-            on.pull_request = {
-              branches = [ "main" ];
-            };
-          };
-        };
-
-        process-compose.cli.environment.PC_DISABLE_TUI = true;
       };
+
+      github-actions = {
+        defaultRunsOn = "ubuntu-latest";
+        summaryJob.enable = true;
+        settings = {
+          name = "CI";
+          on.push = {
+            branches = [ "main" ];
+          };
+          on.pull_request = {
+            branches = [ "main" ];
+          };
+        };
+      };
+
+      process-compose.cli.environment.PC_DISABLE_TUI = true;
 
       jobSets = {
         stg.needs = [ { jobSet = "dev"; } ];
@@ -47,6 +46,10 @@
           }:
           {
             "${stack}_${component}_validate" = {
+              env = {
+                TF_IN_AUTOMATION = "1";
+              };
+              fetchDepth = 0;
               commands = [ "echo tofu validate" ];
             };
 
@@ -103,7 +106,6 @@
                 "${stack}_${deployment}".tags = [ "${stack}_${deployment}" ];
                 "${stack}_${component}_${deployment}" = {
                   tags = [ "${stack}_${component}_${deployment}" ];
-                  github-actions.reusableWorkflow = true;
                   needs = lib.mkIf (needs != [ ]) (
                     map (need: {
                       jobSet =
