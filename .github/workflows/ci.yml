@@ -1,0 +1,306 @@
+jobs:
+  cluster_control-plane_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: control-plane
+      deployment: dev
+      stack: cluster
+  cluster_control-plane_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: control-plane
+      deployment: stg
+      stack: cluster
+  cluster_node-pools_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: node-pools
+      deployment: dev
+      stack: cluster
+  cluster_node-pools_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: node-pools
+      deployment: stg
+      stack: cluster
+  database_postgres_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: postgres
+      deployment: dev
+      stack: database
+  database_postgres_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: postgres
+      deployment: stg
+      stack: database
+  database_redis_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: redis
+      deployment: dev
+      stack: database
+  database_redis_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: redis
+      deployment: stg
+      stack: database
+  networking_dns_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: dns
+      deployment: dev
+      stack: networking
+  networking_dns_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: dns
+      deployment: stg
+      stack: networking
+  networking_vpc_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: vpc
+      deployment: dev
+      stack: networking
+  networking_vpc_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: vpc
+      deployment: stg
+      stack: networking
+  observability_alerting_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: alerting
+      deployment: dev
+      stack: observability
+  observability_alerting_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: alerting
+      deployment: stg
+      stack: observability
+  observability_logging_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: logging
+      deployment: dev
+      stack: observability
+  observability_logging_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: logging
+      deployment: stg
+      stack: observability
+  observability_metrics_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: metrics
+      deployment: dev
+      stack: observability
+  observability_metrics_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: metrics
+      deployment: stg
+      stack: observability
+  platform-services_cert-manager_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: cert-manager
+      deployment: dev
+      stack: platform-services
+  platform-services_cert-manager_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: cert-manager
+      deployment: stg
+      stack: platform-services
+  platform-services_ingress_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: ingress
+      deployment: dev
+      stack: platform-services
+  platform-services_ingress_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: ingress
+      deployment: stg
+      stack: platform-services
+  security_certs_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: certs
+      deployment: dev
+      stack: security
+  security_certs_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: certs
+      deployment: stg
+      stack: security
+  security_iam_dev:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: iam
+      deployment: dev
+      stack: security
+  security_iam_stg:
+    secrets: inherit
+    uses: ./.github/workflows/profile-tofu.yml
+    with:
+      component: iam
+      deployment: stg
+      stack: security
+  summary:
+    if: ${{ always() }}
+    needs:
+      - cluster_control-plane_dev
+      - cluster_control-plane_stg
+      - cluster_node-pools_dev
+      - cluster_node-pools_stg
+      - database_postgres_dev
+      - database_postgres_stg
+      - database_redis_dev
+      - database_redis_stg
+      - networking_dns_dev
+      - networking_dns_stg
+      - networking_vpc_dev
+      - networking_vpc_stg
+      - observability_alerting_dev
+      - observability_alerting_stg
+      - observability_logging_dev
+      - observability_logging_stg
+      - observability_metrics_dev
+      - observability_metrics_stg
+      - platform-services_cert-manager_dev
+      - platform-services_cert-manager_stg
+      - platform-services_ingress_dev
+      - platform-services_ingress_stg
+      - security_certs_dev
+      - security_certs_stg
+      - security_iam_dev
+      - security_iam_stg
+    permissions:
+      actions: read
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          SUMMARY_JOB_NAME: summary
+        run: |
+          jobs_data=""
+          page=1
+          # Exit cleanly if the summary pipe closes (e.g. on ARC runners with no output).
+          trap 'exit 0' PIPE
+          while true; do
+          	response=$(curl -fsSL \
+          		-H "Authorization: Bearer ${GH_TOKEN}" \
+          		-H "Accept: application/vnd.github+json" \
+          		"${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs?per_page=100&page=${page}")
+
+          	# Extract job fields using awk.
+          	# The GitHub API returns fields in a consistent order within each job object:
+          	#   html_url (job-level, contains /job/<id>) -> status -> conclusion -> name -> steps
+          	# Since name appears before steps and we reset url after emitting each row,
+          	# step-level name/status/conclusion fields are safely ignored (url is empty then).
+          	page_jobs=$(printf '%s\n' "$response" | awk '
+          		BEGIN { url = ""; status_val = ""; conclusion_val = "" }
+          		/"html_url":/ && /\/job\// {
+          			val = $0
+          			gsub(/.*"html_url": "/, "", val)
+          			gsub(/".*/, "", val)
+          			url = val
+          		}
+          		url != "" && /"status": "/ {
+          			val = $0
+          			gsub(/.*"status": "/, "", val)
+          			gsub(/".*/, "", val)
+          			status_val = val
+          		}
+          		url != "" && /"conclusion": "/ {
+          			val = $0
+          			gsub(/.*"conclusion": "/, "", val)
+          			gsub(/".*/, "", val)
+          			conclusion_val = val
+          		}
+          		url != "" && /"conclusion": null/ {
+          			conclusion_val = ""
+          		}
+          		url != "" && /"name": "/ {
+          			val = $0
+          			gsub(/.*"name": "/, "", val)
+          			gsub(/".*/, "", val)
+          			eff = (conclusion_val != "" ? conclusion_val : status_val)
+          			print val "\t" eff "\t" url
+          			url = ""; status_val = ""; conclusion_val = ""
+          		}
+          	')
+
+          	jobs_data="${jobs_data}${page_jobs}"$'\n'
+
+          	total=$(printf '%s\n' "$response" | awk '/"total_count":/ { val = $0; gsub(/[^0-9]/, "", val); print val + 0 }')
+          	[ $((page * 100)) -ge "${total:-0}" ] && break
+          	page=$((page + 1))
+          done
+
+          {
+          	echo "## Workflow Job Summary"
+          	echo ""
+          	echo "| Status | Job |"
+          	echo "|--------|-----|"
+
+          	while IFS=$'\t' read -r name conclusion url; do
+          		[[ -z "$name" ]] && continue
+          		[[ "$conclusion" == "skipped" ]] && continue
+          		[[ "$name" == "$SUMMARY_JOB_NAME" ]] && continue
+
+          		case "$conclusion" in
+          		success) icon="✅" ;;
+          		failure) icon="❌" ;;
+          		cancelled) icon="⚠️" ;;
+          		in_progress) icon="⏳" ;;
+          		*) icon="❓" ;;
+          		esac
+
+          		printf '| %s | [%s](%s) |\n' "$icon" "$name" "$url"
+          	done <<<"$jobs_data"
+          } >>"$GITHUB_STEP_SUMMARY" || exit 0
+        shell: bash
+name: CI
+"on":
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main

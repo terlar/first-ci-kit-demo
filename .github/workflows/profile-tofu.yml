@@ -1,0 +1,45 @@
+env:
+  COMPONENT: ${{ inputs.component }}
+  DEPLOYMENT: ${{ inputs.deployment }}
+  STACK: ${{ inputs.stack }}
+jobs:
+  deploy:
+    env:
+      TF_IN_AUTOMATION: "1"
+    needs:
+      - plan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ inputs.stack }}-${{ inputs.component }}-${{ inputs.deployment }}-plan
+          path: terraform/$STACK/$COMPONENT
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan
+  plan:
+    env:
+      TF_IN_AUTOMATION: "1"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT validate
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT.tfvars -out=tfplan
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ inputs.stack }}-${{ inputs.component }}-${{ inputs.deployment }}-plan
+          path: terraform/$STACK/$COMPONENT/tfplan
+          retention-days: 7
+"on":
+  workflow_call:
+    inputs:
+      component:
+        description: Component name
+        type: string
+      deployment:
+        description: Deployment name
+        type: string
+      stack:
+        description: Stack name
+        type: string
