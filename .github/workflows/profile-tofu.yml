@@ -1,6 +1,4 @@
 env:
-  CHANGES: ${{ inputs.changes }}
-  CHANGES_KEY: ${{ inputs.changes_key }}
   COMPONENT: ${{ inputs.component }}
   DEPLOYMENT: ${{ inputs.deployment }}
   STACK: ${{ inputs.stack }}

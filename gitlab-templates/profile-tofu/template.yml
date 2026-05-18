@@ -1,9 +1,5 @@
 spec:
   inputs:
-    changes:
-      description: Change detection JSON passed from the calling workflow.
-    changes_key:
-      description: Key identifying this job in the change detection map.
     component:
       description: Component name
     deploy_rules:
@@ -28,8 +24,6 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_deploy:
     - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
     - tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan
   variables:
-    CHANGES: $[[ inputs.changes ]]
-    CHANGES_KEY: $[[ inputs.changes_key ]]
     COMPONENT: $[[ inputs.component ]]
     DEPLOYMENT: $[[ inputs.deployment ]]
     STACK: $[[ inputs.stack ]]
@@ -45,8 +39,6 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan:
     - tofu -chdir=terraform/$STACK/$COMPONENT validate
     - tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT.tfvars -out=tfplan
   variables:
-    CHANGES: $[[ inputs.changes ]]
-    CHANGES_KEY: $[[ inputs.changes_key ]]
     COMPONENT: $[[ inputs.component ]]
     DEPLOYMENT: $[[ inputs.deployment ]]
     STACK: $[[ inputs.stack ]]
