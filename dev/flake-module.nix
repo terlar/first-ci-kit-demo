@@ -37,7 +37,10 @@
         first-ci-kit-gen-github-actions = {
           enable = true;
           files = "^dev/(ci|stacks).nix$";
-          settings.pipelines.default = ".github/workflows/ci.yml";
+          settings.pipelines = {
+            default = ".github/workflows/ci.yml";
+            profile-tofu = ".github/workflows/profile-tofu.yml";
+          };
         };
 
         first-ci-kit-gen-gitlab-ci = {
