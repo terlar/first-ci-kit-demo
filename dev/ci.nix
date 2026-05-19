@@ -24,6 +24,11 @@
             default = [ ];
             description = "GitLab CI rules for the deploy job.";
           };
+          plan_needs = {
+            type = "array";
+            default = [ ];
+            description = "Jobs that must complete before plan runs (cross-stack dependencies).";
+          };
         };
       };
 
@@ -62,6 +67,7 @@
         plan = {
           tags = [ "profile:tofu" ];
           env.TF_IN_AUTOMATION = "1";
+          gitlab-ci.needs = "$[[ inputs.plan_needs ]]";
           commands = [
             "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend"
             "tofu -chdir=terraform/$STACK/$COMPONENT validate"
@@ -129,55 +135,75 @@
               needs ? [ ],
               ...
             }:
-            (lib.mapAttrsToList (deployment: _: {
-              jobSets = {
-                ${deployment}.tags = [ deployment ];
-                "${stack}_${deployment}".tags = [ "${stack}_${deployment}" ];
-                "${stack}_${component}_${deployment}" = {
-                  tags = [ "${stack}_${component}_${deployment}" ];
-                  needs = lib.mkIf (needs != [ ]) (
-                    map (need: {
-                      jobSet =
-                        lib.pipe
-                          [
-                            (need.stack or stack)
-                            (need.component or "")
-                            deployment
-                          ]
-                          [
-                            (lib.lists.remove "")
-                            (builtins.concatStringsSep "_")
-                          ];
-                    }) needs
-                  );
-                };
-              };
-
-              jobs."${stack}_${component}_${deployment}" = {
-                tags = [
-                  "${stack}_${deployment}"
-                  "${stack}_${component}_${deployment}"
-                ];
-                branches.default = {
-                  changes.paths = [
-                    "terraform/${stack}/${component}/**"
-                    "terraform/modules/component/**"
-                  ];
-                  triggers.onPush = true;
-                  triggers.onMergeRequest = true;
-                };
-
-                pipelineCall = {
-                  pipeline = "profile-tofu";
-                  inputs = { inherit stack component deployment; };
-                  gitlab-ci = {
-                    templatePath = "gitlab-templates/profile-tofu/template.yml";
-                    rulesInput = "rules";
-                    pushRulesInput = "deploy_rules";
+            (lib.mapAttrsToList (
+              deployment: _:
+              let
+                stacks = import ./stacks.nix;
+                depJobNames = lib.concatMap (
+                  need:
+                  let
+                    needStack = need.stack or stack;
+                    stackDef = stacks.${needStack};
+                  in
+                  if need ? component then
+                    [ "${needStack}_${need.component}_${deployment}_deploy" ]
+                  else
+                    map (c: "${needStack}_${c}_${deployment}_deploy") (builtins.attrNames stackDef.components)
+                ) needs;
+              in
+              {
+                jobSets = {
+                  ${deployment}.tags = [ deployment ];
+                  "${stack}_${deployment}".tags = [ "${stack}_${deployment}" ];
+                  "${stack}_${component}_${deployment}" = {
+                    tags = [ "${stack}_${component}_${deployment}" ];
+                    needs = lib.mkIf (needs != [ ]) (
+                      map (need: {
+                        jobSet =
+                          lib.pipe
+                            [
+                              (need.stack or stack)
+                              (need.component or "")
+                              deployment
+                            ]
+                            [
+                              (lib.lists.remove "")
+                              (builtins.concatStringsSep "_")
+                            ];
+                      }) needs
+                    );
                   };
                 };
-              };
-            }) v.deployments)
+
+                jobs."${stack}_${component}_${deployment}" = {
+                  tags = [
+                    "${stack}_${deployment}"
+                    "${stack}_${component}_${deployment}"
+                  ];
+                  branches.default = {
+                    changes.paths = [
+                      "terraform/${stack}/${component}/**"
+                      "terraform/modules/component/**"
+                    ];
+                    triggers.onPush = true;
+                    triggers.onMergeRequest = true;
+                  };
+
+                  pipelineCall = {
+                    pipeline = "profile-tofu";
+                    inputs = { inherit stack component deployment; };
+                    gitlab-ci = {
+                      templatePath = "gitlab-templates/profile-tofu/template.yml";
+                      rulesInput = "rules";
+                      pushRulesInput = "deploy_rules";
+                      extraInputs = lib.optionalAttrs (depJobNames != [ ]) {
+                        plan_needs = depJobNames;
+                      };
+                    };
+                  };
+                };
+              }
+            ) v.deployments)
           ) v.components)
         ))
         lib.flatten
