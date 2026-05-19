@@ -125,90 +125,69 @@
         };
       }
 
-      (lib.pipe ./stacks.nix [
-        import
-        (
-          stacks:
+      (lib.pipe (import ./stacks.nix) [
+        (lib.mapAttrsToList (
+          stack: v:
           lib.mapAttrsToList (
-            stack: v:
-            lib.mapAttrsToList (
-              component:
-              {
-                needs ? [ ],
-                ...
-              }:
-              lib.mapAttrsToList (
-                deployment: _:
-                let
-                  depJobNames = lib.concatMap (
-                    need:
-                    let
-                      needStack = need.stack or stack;
-                    in
-                    if need ? component then
-                      [ "${needStack}_${need.component}_${deployment}_deploy" ]
-                    else
-                      map (c: "${needStack}_${c}_${deployment}_deploy") (
-                        builtins.attrNames stacks.${needStack}.components
-                      )
-                  ) needs;
-                in
-                {
-                  jobSets = {
-                    ${deployment}.tags = [ deployment ];
-                    "${stack}_${deployment}".tags = [ "${stack}_${deployment}" ];
-                    "${stack}_${component}_${deployment}" = {
-                      tags = [ "${stack}_${component}_${deployment}" ];
-                      needs = lib.mkIf (needs != [ ]) (
-                        map (need: {
-                          jobSet =
-                            lib.pipe
-                              [
-                                (need.stack or stack)
-                                (need.component or "")
-                                deployment
-                              ]
-                              [
-                                (lib.lists.remove "")
-                                (builtins.concatStringsSep "_")
-                              ];
-                        }) needs
-                      );
+            component:
+            {
+              needs ? [ ],
+              ...
+            }:
+            lib.mapAttrsToList (deployment: _: {
+              jobSets = {
+                ${deployment}.tags = [ deployment ];
+                "${stack}_${deployment}".tags = [ "${stack}_${deployment}" ];
+                "${stack}_${component}_${deployment}" = {
+                  tags = [ "${stack}_${component}_${deployment}" ];
+                  needs = lib.mkIf (needs != [ ]) (
+                    map (need: {
+                      jobSet =
+                        lib.pipe
+                          [
+                            (need.stack or stack)
+                            (need.component or "")
+                            deployment
+                          ]
+                          [
+                            (lib.lists.remove "")
+                            (builtins.concatStringsSep "_")
+                          ];
+                    }) needs
+                  );
+                };
+              };
+
+              jobs."${stack}_${component}_${deployment}" = {
+                tags = [
+                  "${stack}_${deployment}"
+                  "${stack}_${component}_${deployment}"
+                ];
+                branches.default = {
+                  changes.paths = [
+                    "terraform/${stack}/${component}/**"
+                    "terraform/modules/component/**"
+                  ];
+                  triggers.onPush = true;
+                  triggers.onMergeRequest = true;
+                };
+
+                pipelineCall = {
+                  pipeline = "profile-tofu";
+                  inputs = { inherit stack component deployment; };
+                  gitlab-ci = {
+                    templatePath = "gitlab-templates/profile-tofu/template.yml";
+                    rulesInput = "rules";
+                    pushRulesInput = "deploy_rules";
+                    needsInputs = {
+                      "plan_needs" = "deploy";
                     };
                   };
-
-                  jobs."${stack}_${component}_${deployment}" = {
-                    tags = [
-                      "${stack}_${deployment}"
-                      "${stack}_${component}_${deployment}"
-                    ];
-                    branches.default = {
-                      changes.paths = [
-                        "terraform/${stack}/${component}/**"
-                        "terraform/modules/component/**"
-                      ];
-                      triggers.onPush = true;
-                      triggers.onMergeRequest = true;
-                    };
-
-                    pipelineCall = {
-                      pipeline = "profile-tofu";
-                      inputs = { inherit stack component deployment; };
-                      gitlab-ci = {
-                        templatePath = "gitlab-templates/profile-tofu/template.yml";
-                        rulesInput = "rules";
-                        pushRulesInput = "deploy_rules";
-                        extraInputs = lib.optionalAttrs (depJobNames != [ ]) {
-                          plan_needs = depJobNames;
-                        };
-                      };
-                    };
-                  };
-                }
-              ) v.deployments
-            ) v.components
-          ) stacks
-        )
+                };
+              };
+            }) v.deployments
+          ) v.components
+        ))
         lib.flatten
         (builtins.foldl' lib.recursiveUpdate { })
       ])
