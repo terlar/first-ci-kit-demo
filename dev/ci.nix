@@ -44,7 +44,7 @@
           env.NIX_CONFIG = "experimental-features = nix-command flakes";
           gitlab-ci.before_script = [
             "nix print-dev-env .#profile-tofu > profile-tofu.sh"
-            ". profile-tofu.sh"
+            ". ./profile-tofu.sh"
           ];
           github-actions.steps = lib.mkOrder 550 [
             {
