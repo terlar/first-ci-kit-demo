@@ -25,6 +25,13 @@
     {
       formatter = config.treefmt.programs.nixfmt.package;
 
+      packages.gen-stack-diagram = pkgs.buildGoModule {
+        pname = "gen-stack-diagram";
+        version = "0.1.0";
+        src = ../tools/gen-stack-diagram;
+        vendorHash = null;
+      };
+
       treefmt = {
         programs.nixfmt = {
           enable = true;
@@ -54,6 +61,24 @@
             default = ".gitlab-ci.yml";
             profile-tofu = "gitlab-templates/profile-tofu/template.yml";
           };
+        };
+
+        gen-stack-diagram = {
+          enable = true;
+          name = "Generate stack diagram";
+          entry = pkgs.lib.getExe (
+            pkgs.writeShellApplication {
+              name = "gen-stack-diagram-hook";
+              runtimeInputs = [ config.packages.gen-stack-diagram ];
+              text = ''
+                nix eval --json --impure --expr 'import ./dev/stacks.nix' \
+                  | gen-stack-diagram
+              '';
+            }
+          );
+          files = "^dev/stacks\\.nix$";
+          pass_filenames = false;
+          language = "system";
         };
       };
     };
