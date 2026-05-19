@@ -5,6 +5,7 @@ env:
 jobs:
   deploy:
     env:
+      NIX_CONFIG: experimental-features = nix-command flakes
       TF_IN_AUTOMATION: "1"
     needs:
       - plan
@@ -27,6 +28,7 @@ jobs:
       - run: tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan
   plan:
     env:
+      NIX_CONFIG: experimental-features = nix-command flakes
       TF_IN_AUTOMATION: "1"
     runs-on: ubuntu-latest
     steps:

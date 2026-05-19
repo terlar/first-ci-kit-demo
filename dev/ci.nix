@@ -36,6 +36,7 @@
         tags = [ "profile:tofu" ];
         jobDefaults = {
           image = "nixos/nix";
+          env.NIX_CONFIG = "experimental-features = nix-command flakes";
           gitlab-ci.before_script = [
             "nix print-dev-env .#profile-tofu > profile-tofu.sh"
             ". profile-tofu.sh"
@@ -68,7 +69,7 @@
           ];
           artifacts.upload = {
             name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
-            paths = [ "terraform/\${{ env.STACK }}/\${{ env.COMPONENT }}/tfplan" ];
+            paths = [ "terraform/$STACK/$COMPONENT/tfplan" ];
             retentionDays = 7;
           };
         };
@@ -83,7 +84,7 @@
           ];
           artifacts.download = {
             name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
-            path = "terraform/\${{ env.STACK }}/\${{ env.COMPONENT }}";
+            path = "terraform/$STACK/$COMPONENT";
           };
         };
       };

@@ -31,6 +31,7 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_deploy:
   variables:
     COMPONENT: $[[ inputs.component ]]
     DEPLOYMENT: $[[ inputs.deployment ]]
+    NIX_CONFIG: experimental-features = nix-command flakes
     STACK: $[[ inputs.stack ]]
     TF_IN_AUTOMATION: "1"
 $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan:
@@ -51,5 +52,6 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan:
   variables:
     COMPONENT: $[[ inputs.component ]]
     DEPLOYMENT: $[[ inputs.deployment ]]
+    NIX_CONFIG: experimental-features = nix-command flakes
     STACK: $[[ inputs.stack ]]
     TF_IN_AUTOMATION: "1"
