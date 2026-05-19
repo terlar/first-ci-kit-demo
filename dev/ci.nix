@@ -24,6 +24,11 @@
             default = [ ];
             description = "GitLab CI rules for the deploy job.";
           };
+          plan_needs = {
+            type = "array";
+            default = [ ];
+            description = "Jobs that must complete before plan runs (cross-stack dependencies).";
+          };
         };
       };
 
@@ -62,6 +67,7 @@
         plan = {
           tags = [ "profile:tofu" ];
           env.TF_IN_AUTOMATION = "1";
+          gitlab-ci.needs = "$[[ inputs.plan_needs ]]";
           commands = [
             "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend"
             "tofu -chdir=terraform/$STACK/$COMPONENT validate"
@@ -119,17 +125,16 @@
         };
       }
 
-      (lib.pipe ./stacks.nix [
-        import
+      (lib.pipe (import ./stacks.nix) [
         (lib.mapAttrsToList (
           stack: v:
-          (lib.mapAttrsToList (
+          lib.mapAttrsToList (
             component:
             {
               needs ? [ ],
               ...
             }:
-            (lib.mapAttrsToList (deployment: _: {
+            lib.mapAttrsToList (deployment: _: {
               jobSets = {
                 ${deployment}.tags = [ deployment ];
                 "${stack}_${deployment}".tags = [ "${stack}_${deployment}" ];
@@ -174,11 +179,14 @@
                     templatePath = "gitlab-templates/profile-tofu/template.yml";
                     rulesInput = "rules";
                     pushRulesInput = "deploy_rules";
+                    needsInputs = {
+                      "plan_needs" = "deploy";
+                    };
                   };
                 };
               };
-            }) v.deployments)
-          ) v.components)
+            }) v.deployments
+          ) v.components
         ))
         lib.flatten
         (builtins.foldl' lib.recursiveUpdate { })

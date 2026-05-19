@@ -8,6 +8,10 @@ spec:
       type: array
     deployment:
       description: Deployment name
+    plan_needs:
+      default: []
+      description: Jobs that must complete before plan runs (cross-stack dependencies).
+      type: array
     rules:
       default: []
       description: GitLab CI rules for the plan job.
@@ -44,6 +48,7 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan:
     - nix print-dev-env .#profile-tofu > profile-tofu.sh
     - . profile-tofu.sh
   image: nixos/nix
+  needs: $[[ inputs.plan_needs ]]
   script:
     - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
     - tofu -chdir=terraform/$STACK/$COMPONENT validate
