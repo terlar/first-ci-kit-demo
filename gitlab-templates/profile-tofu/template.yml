@@ -22,7 +22,7 @@ spec:
 $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_deploy:
   before_script:
     - nix print-dev-env .#profile-tofu > profile-tofu.sh
-    - . profile-tofu.sh
+    - . ./profile-tofu.sh
   image: nixos/nix
   needs:
     - artifacts: true
@@ -46,7 +46,7 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan:
     public: false
   before_script:
     - nix print-dev-env .#profile-tofu > profile-tofu.sh
-    - . profile-tofu.sh
+    - . ./profile-tofu.sh
   image: nixos/nix
   needs: $[[ inputs.plan_needs ]]
   script:
