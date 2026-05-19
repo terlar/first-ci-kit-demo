@@ -1,0 +1,66 @@
+direction: right
+
+networking: Networking {
+  vpc: vpc
+  dns: dns
+}
+
+security: Security {
+  iam: iam
+  certs: certs
+}
+
+cluster: Cluster {
+  control-plane: control-plane
+  node-pools: node-pools
+}
+
+database: Database {
+  postgres: postgres
+  redis: redis
+}
+
+observability: Observability {
+  metrics: metrics
+  logging: logging
+  alerting: alerting
+}
+
+platform-services: Platform Services {
+  ingress: ingress
+  cert-manager: cert-manager
+}
+
+# cluster
+networking -> cluster.control-plane
+cluster.control-plane -> cluster.node-pools
+
+# database
+networking -> database.postgres
+security.iam -> database.postgres
+networking -> database.redis
+
+# observability
+cluster -> observability.metrics
+cluster -> observability.logging
+observability.metrics -> observability.alerting
+
+# platform-services
+cluster -> platform-services.ingress
+security.certs -> platform-services.ingress
+cluster -> platform-services.cert-manager
+networking.dns -> platform-services.cert-manager
+
+# styles
+networking.style.fill: "#dbeafe"
+networking.style.stroke: "#3b82f6"
+security.style.fill: "#fef9c3"
+security.style.stroke: "#eab308"
+cluster.style.fill: "#dcfce7"
+cluster.style.stroke: "#22c55e"
+database.style.fill: "#fce7f3"
+database.style.stroke: "#ec4899"
+observability.style.fill: "#ede9fe"
+observability.style.stroke: "#8b5cf6"
+platform-services.style.fill: "#ffedd5"
+platform-services.style.stroke: "#f97316"

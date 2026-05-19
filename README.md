@@ -21,6 +21,9 @@ produces both CI platforms with correct cross-stack job ordering on each.
 ## Repository structure
 
 ```
+docs/
+  stacks.d2           # D2 source for the stack dependency diagram
+  stacks.svg          # Rendered diagram (regenerate with: d2 docs/stacks.d2 docs/stacks.svg)
 dev/
   ci.nix              # Pipeline definitions (source of truth for both platforms)
   stacks.nix          # Stack/component/deployment topology and cross-stack needs
@@ -52,28 +55,9 @@ gitlab-templates/
 
 Six stacks, each with two or three components, all deployed to `dev` and `stg`:
 
-```
-networking  ──────────────────────────────────────────┐
-  vpc                                                  │
-  dns                                                  │
-                                                       ▼
-security                          cluster ─────────────────────────────┐
-  iam ──────────────────────┐       control-plane (needs: networking)   │
-  certs ────────────────┐   │       node-pools    (needs: control-plane)│
-                        │   │                                           │
-                        │   └──► database                               │
-                        │          postgres (needs: networking, iam)    │
-                        │          redis    (needs: networking)         │
-                        │                                               │
-                        └──────► platform-services ◄───────────────────┘
-                                   ingress       (needs: cluster, certs)
-                                   cert-manager  (needs: cluster, dns)
+![Stack dependency diagram](docs/stacks.svg)
 
-                                 observability  ◄─────────────────────┘
-                                   metrics   (needs: cluster)
-                                   logging   (needs: cluster)
-                                   alerting  (needs: metrics)
-```
+The diagram source is [`docs/stacks.d2`](docs/stacks.d2).
 
 Cross-stack `needs` are declared once in `dev/stacks.nix` and automatically
 translated into `needs:` entries in GitHub Actions and `plan_needs` inputs in
