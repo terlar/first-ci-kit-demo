@@ -7,7 +7,7 @@
     inputs.first-ci-kit.flakeModules.git-hooks
     inputs.first-ci-kit.flakeModules.process-compose
     inputs.process-compose.flakeModule
-    ./ci.nix
+    ./ci
   ];
 
   systems = [
@@ -40,20 +40,12 @@
       pre-commit.settings.hooks = {
         first-ci-kit-gen-github-actions = {
           enable = true;
-          files = "^dev/(ci|stacks).nix$";
-          settings.pipelines = {
-            default = ".github/workflows/ci.yml";
-            profile-tofu = ".github/workflows/profile-tofu.yml";
-          };
+          files = "^dev/(ci/.*|stacks).nix$";
         };
 
         first-ci-kit-gen-gitlab-ci = {
           enable = true;
-          files = "^dev/(ci|stacks).nix$";
-          settings.pipelines = {
-            default = ".gitlab-ci.yml";
-            profile-tofu = "gitlab-templates/profile-tofu/template.yml";
-          };
+          files = "^dev/(ci/.*|stacks).nix$";
         };
       };
     };
