@@ -68,9 +68,9 @@
         env.TF_IN_AUTOMATION = "1";
         gitlab-ci.needs = "$[[ inputs.plan_needs ]]";
         commands = [
-          "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend"
+          "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend"
           "tofu -chdir=terraform/$STACK/$COMPONENT validate"
-          "tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT.tfvars -out=tfplan"
+          "tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT/terraform.tfvars -out=tfplan"
         ];
         artifacts.upload = {
           name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
@@ -84,7 +84,7 @@
         env.TF_IN_AUTOMATION = "1";
         needs = [ { job = "plan"; } ];
         commands = [
-          "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend"
+          "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend"
           "tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan"
         ];
         artifacts.download = {

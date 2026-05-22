@@ -1,6 +1,9 @@
 {
   first-ci-kit.pipelines.default = {
-    stacks = import ../stacks.nix;
+    stackDiscovery = {
+      enable = true;
+      path = ../../terraform;
+    };
 
     defaultJobFactory = "tofu-component";
 

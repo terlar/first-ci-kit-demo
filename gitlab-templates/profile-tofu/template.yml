@@ -29,7 +29,7 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_deploy:
       job: $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan
       optional: false
   script:
-    - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
+    - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend
     - tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan
   stage: main
   variables:
@@ -50,9 +50,9 @@ $[[ inputs.stack ]]_$[[ inputs.component ]]_$[[ inputs.deployment ]]_plan:
   image: nixos/nix
   needs: $[[ inputs.plan_needs ]]
   script:
-    - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
+    - tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend
     - tofu -chdir=terraform/$STACK/$COMPONENT validate
-    - tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT.tfvars -out=tfplan
+    - tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT/terraform.tfvars -out=tfplan
   stage: main
   variables:
     COMPONENT: $[[ inputs.component ]]
