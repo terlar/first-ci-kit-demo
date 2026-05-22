@@ -6,8 +6,8 @@
 
     jobFactories.tofu-component.fn =
       {
-        stackName,
-        componentName,
+        stack,
+        component,
         deployment,
         formatJobName,
         needs,
@@ -15,12 +15,12 @@
       }:
       let
         jobName = formatJobName [
-          stackName
-          componentName
+          stack
+          component
           deployment
         ];
         stackDeployment = formatJobName [
-          stackName
+          stack
           deployment
         ];
       in
@@ -41,7 +41,7 @@
           ];
           branches.default = {
             changes.paths = [
-              "terraform/${stackName}/${componentName}/**"
+              "terraform/${stack}/${component}/**"
               "terraform/modules/component/**"
             ];
             triggers.onPush = true;
@@ -50,11 +50,7 @@
 
           pipelineCall = {
             pipeline = "profile-tofu";
-            inputs = {
-              stack = stackName;
-              component = componentName;
-              inherit deployment;
-            };
+            inputs = { inherit stack component deployment; };
             gitlab-ci = {
               rulesInput = "rules";
               pushRulesInput = "deploy_rules";
