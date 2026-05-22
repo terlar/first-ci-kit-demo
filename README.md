@@ -5,8 +5,8 @@ that generates GitHub Actions workflows and GitLab CI pipelines from a single
 declarative Nix configuration.
 
 The repository models six infrastructure stacks managed with [OpenTofu],
-deployed to two environments (`dev`, `stg`). The same `dev/ci.nix` source
-produces both CI platforms with correct cross-stack job ordering on each.
+deployed to two environments (`dev`, `stg`). The `dev/ci/` source produces
+both CI platforms with correct cross-stack job ordering on each.
 
 ## Pipelines
 
@@ -25,10 +25,14 @@ docs/
   stacks.d2           # D2 source for the stack dependency diagram
   stacks.svg          # Rendered diagram (regenerate with: d2 docs/stacks.d2 docs/stacks.svg)
 dev/
-  ci.nix              # Pipeline definitions (source of truth for both platforms)
+  ci/
+    default.nix       # Imports all CI modules
+    settings.nix      # Default pipeline: CI backend settings and jobSet layout
+    profile-tofu.nix  # profile-tofu pipeline: plan+deploy jobs and runner config
+    factory.nix       # Stack topology wiring: stacks, defaultJobFactory
   stacks.nix          # Stack/component/deployment topology and cross-stack needs
   flake.nix           # Dev partition flake; declares first-ci-kit input
-  flake-module.nix    # Pre-commit hooks that regenerate CI files from ci.nix
+  flake-module.nix    # Pre-commit hooks that regenerate CI files on change
 terraform/
   <stack>/<component>/  # OpenTofu modules, mirroring the stack topology
   modules/component/    # Shared component module
@@ -86,20 +90,28 @@ upstream `_deploy` jobs via the `plan_needs` component input before starting.
 ## How it works
 
 ```
-dev/ci.nix  ──► first-ci-kit  ──► .github/workflows/ci.yml
-                                   .github/workflows/profile-tofu.yml
-                                   .gitlab-ci.yml
-                                   gitlab-templates/profile-tofu/template.yml
+dev/ci/  ──► first-ci-kit  ──► .github/workflows/ci.yml
+                                .github/workflows/profile-tofu.yml
+                                .gitlab-ci.yml
+                                gitlab-templates/profile-tofu/template.yml
 ```
 
-`dev/ci.nix` declares two pipelines using the `first-ci-kit` Nix module:
+The CI config is split across four focused files:
 
-- **`profile-tofu`** — the reusable plan+deploy pipeline template, with
-  per-platform rendering (reusable workflow on GitHub Actions, GitLab CI
-  component on GitLab CI)
-- **`default`** — iterates over `dev/stacks.nix` to generate one
-  `pipelineCall` job per `(stack, component, deployment)` triple, wiring
-  up change detection, `needs` ordering, and rules
+- **`settings.nix`** — top-level GitLab CI and GitHub Actions settings for the
+  `default` pipeline (stages, workflow rules, summary job, etc.)
+- **`profile-tofu.nix`** — the `profile-tofu` pipeline: a reusable plan+deploy
+  template rendered as a reusable workflow on GitHub Actions and a GitLab CI
+  component. Its `templatePath` (`gitlab-templates/profile-tofu/template.yml`)
+  is derived automatically from the pipeline name by first-ci-kit.
+- **`factory.nix`** — wires the stack topology to CI: declares `stacks` from
+  `dev/stacks.nix` and a `tofu-component` jobFactory that generates one
+  `pipelineCall` job per `(stack, component, deployment)` triple, wiring up
+  change detection, `needs` ordering, and GitLab CI rules inputs automatically.
+
+The jobFactory receives `stack`, `component`, `deployment` and `formatJobName`
+for each triple and returns the jobs and jobSets to add to the `default`
+pipeline — no manual enumeration of stacks or components in the CI config.
 
 [first-ci-kit]: https://github.com/terlar/first-ci-kit
 [OpenTofu]: https://opentofu.org
