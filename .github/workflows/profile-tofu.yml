@@ -24,7 +24,7 @@ jobs:
         with:
           name: ${{ inputs.stack }}-${{ inputs.component }}-${{ inputs.deployment }}-plan
           path: terraform/${{ env.STACK }}/${{ env.COMPONENT }}
-      - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend
       - run: tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan
   plan:
     env:
@@ -41,9 +41,9 @@ jobs:
         run: |
           nix print-dev-env .#profile-tofu > profile-tofu.sh
           echo "BASH_ENV=$PWD/profile-tofu.sh" >> "$GITHUB_ENV"
-      - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT.tfbackend
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend
       - run: tofu -chdir=terraform/$STACK/$COMPONENT validate
-      - run: tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT.tfvars -out=tfplan
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT/terraform.tfvars -out=tfplan
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.stack }}-${{ inputs.component }}-${{ inputs.deployment }}-plan
