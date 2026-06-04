@@ -23,9 +23,9 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: ${{ inputs.stack }}-${{ inputs.component }}-${{ inputs.deployment }}-plan
-          path: terraform/${{ env.STACK }}/${{ env.COMPONENT }}
-      - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend
-      - run: tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan
+          path: terraform/${{ env.STACK }}/${{ env.COMPONENT }}/tfplan-${{ env.DEPLOYMENT }}
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend -backend-config="path=terraform.tfstate-$DEPLOYMENT"
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan-$DEPLOYMENT
   plan:
     env:
       NIX_CONFIG: experimental-features = nix-command flakes
@@ -41,13 +41,13 @@ jobs:
         run: |
           nix print-dev-env .#profile-tofu > profile-tofu.sh
           echo "BASH_ENV=$PWD/profile-tofu.sh" >> "$GITHUB_ENV"
-      - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend -backend-config="path=terraform.tfstate-$DEPLOYMENT"
       - run: tofu -chdir=terraform/$STACK/$COMPONENT validate
-      - run: tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT/terraform.tfvars -out=tfplan
+      - run: tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT/terraform.tfvars -out=tfplan-$DEPLOYMENT
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.stack }}-${{ inputs.component }}-${{ inputs.deployment }}-plan
-          path: terraform/${{ env.STACK }}/${{ env.COMPONENT }}/tfplan
+          path: terraform/${{ env.STACK }}/${{ env.COMPONENT }}/tfplan-${{ env.DEPLOYMENT }}
           retention-days: 7
 "on":
   workflow_call:

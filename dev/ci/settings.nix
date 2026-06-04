@@ -20,8 +20,6 @@
       };
     };
 
-    process-compose.cli.environment.PC_DISABLE_TUI = true;
-
     jobSets.stg.needs = [ { jobSet = "dev"; } ];
   };
 }
