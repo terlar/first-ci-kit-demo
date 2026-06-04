@@ -2,3 +2,9 @@
 /.direnv
 /.pre-commit-config.yaml
 /result*
+/profile-*.sh
+
+# Terraform / OpenTofu
+terraform/**/.terraform*
+terraform/**/terraform.tfstate*
+terraform/**/tfplan*

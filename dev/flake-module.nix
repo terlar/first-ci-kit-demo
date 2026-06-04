@@ -34,6 +34,9 @@
 
       devShells.profile-tofu = pkgs.mkShell {
         packages = [ pkgs.opentofu ];
+        shellHook = ''
+          export TF_DATA_DIR=.terraform-$DEPLOYMENT
+        '';
       };
 
       pre-commit.check.enable = false;

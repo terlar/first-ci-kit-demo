@@ -41,10 +41,12 @@
       jobDefaults = {
         image = "nixos/nix";
         env.NIX_CONFIG = "experimental-features = nix-command flakes";
+
         gitlab-ci.before_script = [
           "nix print-dev-env .#profile-tofu > profile-tofu.sh"
           ". ./profile-tofu.sh"
         ];
+
         github-actions.steps = lib.mkOrder 550 [
           {
             name = "Install Nix";
@@ -59,6 +61,11 @@
             '';
           }
         ];
+
+        process-compose.before_script = [
+          "nix print-dev-env .#profile-tofu > profile-tofu.sh"
+          ". ./profile-tofu.sh"
+        ];
       };
     };
 
@@ -68,13 +75,13 @@
         env.TF_IN_AUTOMATION = "1";
         gitlab-ci.needs = "$[[ inputs.plan_needs ]]";
         commands = [
-          "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend"
+          "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend -backend-config=\"path=terraform.tfstate-$DEPLOYMENT\""
           "tofu -chdir=terraform/$STACK/$COMPONENT validate"
-          "tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT/terraform.tfvars -out=tfplan"
+          "tofu -chdir=terraform/$STACK/$COMPONENT plan -var-file=deployments/$DEPLOYMENT/terraform.tfvars -out=tfplan-$DEPLOYMENT"
         ];
         artifacts.upload = {
           name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
-          paths = [ "terraform/$STACK/$COMPONENT/tfplan" ];
+          paths = [ "terraform/$STACK/$COMPONENT/tfplan-$DEPLOYMENT" ];
           retentionDays = 7;
         };
       };
@@ -84,12 +91,12 @@
         env.TF_IN_AUTOMATION = "1";
         needs = [ { job = "plan"; } ];
         commands = [
-          "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend"
-          "tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan"
+          "tofu -chdir=terraform/$STACK/$COMPONENT init -backend-config=deployments/$DEPLOYMENT/backend.tfbackend -backend-config=\"path=terraform.tfstate-$DEPLOYMENT\""
+          "tofu -chdir=terraform/$STACK/$COMPONENT apply -auto-approve tfplan-$DEPLOYMENT"
         ];
         artifacts.download = {
           name = "\${{ inputs.stack }}-\${{ inputs.component }}-\${{ inputs.deployment }}-plan";
-          path = "terraform/$STACK/$COMPONENT";
+          path = "terraform/$STACK/$COMPONENT/tfplan-$DEPLOYMENT";
         };
       };
     };
