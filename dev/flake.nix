@@ -8,7 +8,7 @@
       inputs.flake-parts.follows = "dev-flake/flake-parts";
     };
     process-compose.url = "github:platonic-systems/process-compose-flake";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
   };
 
   outputs = _: { };
