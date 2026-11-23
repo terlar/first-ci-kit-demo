@@ -50,7 +50,7 @@
         github-actions.steps = lib.mkOrder 550 [
           {
             name = "Install Nix";
-            uses = "cachix/install-nix-action@v31";
+            uses = "cachix/install-nix-action@v32";
             "with".install_url = "https://releases.nixos.org/nix/nix-2.33.0/install";
           }
           {
